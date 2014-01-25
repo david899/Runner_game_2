@@ -21,6 +21,7 @@ public:
 	void generujPola(int ilePol);
 	void generujPola(int ileWygenerowac, int ileUsunac);
 	vector<ObiektFizyczny*>::iterator zwrocItNaPolePoczatkowe();
+	float RandomFloat(float min, float max);
 private:
 	static const int iloscPolStartowych = 30  ;
 	void wypelnijPoleLosowo(ObiektFizyczny* pole);

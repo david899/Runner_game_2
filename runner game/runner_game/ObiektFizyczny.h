@@ -40,7 +40,6 @@ private:
 	// te funkcje nie moga byc widoczne dalej, wywolywalne tylko przez wskazniki w rysuj
 	void rysujPole(); 
 	void rysujKamien();
-	
 };
 
 #endif

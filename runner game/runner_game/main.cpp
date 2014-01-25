@@ -121,7 +121,9 @@ int main(int argc, char* argv[])
 	{
 		keystate[key] = false;
 		if (key == 32) // spacja
-			gracz.dodajPredkosc(0.3f);
+			gracz.dodajPredkosc(0.1f);
+		if (key == 'p')
+			gracz.predkosc = 0.0f;
 
 	#pragma region sterowanie kamera
 		Vec3 cel = gracz.pozycja;
@@ -180,6 +182,7 @@ void Update(int id)
 
 	gracz.update();
 	kamera.Update(gracz);
+	
 }
 
 void rysujSfereNieba()
@@ -251,14 +254,15 @@ void OnRender()
 	
 
 	#pragma region Rysuje tutaj
+
+		gracz.sprawdzKolizje();
+		gracz.mapa->rysuj();
+		gracz.rysuj();
 		if(debug)
 		{
 			gracz.mapa->debugRysuj();
 			gracz.debugRysuj();
 		}
-		gracz.sprawdzKolizje();
-		gracz.mapa->rysuj();
-		gracz.rysuj();
 	#pragma endregion
 	
 	glutSwapBuffers();

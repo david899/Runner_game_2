@@ -17,16 +17,18 @@ Mapa::Mapa()
 }
 void Mapa::rysuj()
 {
-	vector<ObiektFizyczny*>::iterator it;
-	for(it = wektorPol.begin(); it != wektorPol.end(); it++)
+	vector<ObiektFizyczny*>::iterator it = wektorPol.begin();
+	//for(it = wektorPol.begin(); it != wektorPol.end(); it++)
+	for(int i = 0; i < wektorPol.size(); i++, it++)
 	{
 		(*it)->rysuj();
 	}
 }
 void Mapa::debugRysuj()
 {
-	vector<ObiektFizyczny*>::iterator it;
-	for(it = wektorPol.begin(); it != wektorPol.end(); it++)
+	vector<ObiektFizyczny*>::iterator it = wektorPol.begin();
+	//for(it = wektorPol.begin(); it != wektorPol.end(); it++)
+	for(int i = 0; i < wektorPol.size(); i++, it++)
 	{
 		(*it)->debugRysuj();
 	}
@@ -76,19 +78,10 @@ void Mapa::generujPola(int ileWygenerowac, int ileUsunac)
 void Mapa::wypelnijPoleLosowo(ObiektFizyczny* poleDoWypelnienia)
 {
 	float x,y,z;
-	if(poleDoWypelnienia->szescianAABBmin.x == 0)
-		x = rand() % (int)poleDoWypelnienia->szescianAABBmax.x;
-	else
-		x = rand() % (int)poleDoWypelnienia->szescianAABBmin.x + (int)poleDoWypelnienia->szescianAABBmax.x;
-	/*if(poleDoWypelnienia->szescianAABBmin.y == 0)
-		y = rand() % (int)poleDoWypelnienia->szescianAABBmax.y;
-	else
-		y = rand() % (int)poleDoWypelnienia->szescianAABBmin.y + (int)poleDoWypelnienia->szescianAABBmax.y;*/
-	if(poleDoWypelnienia->szescianAABBmin.z == 0)
-		z = rand() % (int)poleDoWypelnienia->szescianAABBmax.z;
-	else
-		z = rand() % (int)poleDoWypelnienia->szescianAABBmin.z + (int)poleDoWypelnienia->szescianAABBmax.z;
-	y = 0.0f;
+	x = RandomFloat(poleDoWypelnienia->szescianAABBmin.x, poleDoWypelnienia->szescianAABBmax.x);
+	y = RandomFloat(poleDoWypelnienia->szescianAABBmin.y, poleDoWypelnienia->szescianAABBmax.y);
+	//y = 0.0f;
+	z = RandomFloat(poleDoWypelnienia->szescianAABBmin.z, poleDoWypelnienia->szescianAABBmax.z);
 	ObiektFizyczny* obiekt = new ObiektFizyczny(Vec3(x,y,z),TypyObiektow::typKamien);
 	poleDoWypelnienia->dodajObiekt(obiekt);
 }
@@ -96,4 +89,10 @@ vector<ObiektFizyczny*>::iterator Mapa::zwrocItNaPolePoczatkowe()
 {
 	vector<ObiektFizyczny*>::iterator it = wektorPol.begin();
 	return it;
+}
+float Mapa::RandomFloat(float min, float max)
+{ 
+	int r = rand(); 
+	float fraction = ((float) r / RAND_MAX) * (max - min); 
+	return min + fraction;
 }

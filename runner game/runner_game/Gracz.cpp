@@ -25,17 +25,14 @@ Gracz::Gracz()
 
 	predkosc = 0.0f;
 
-	szescianAABBmin = szescianAABBmax = pozycja; // od tej pozycji przesuniecia ponizsze maja sens
-	szescianAABBmin.x -= abs(szescianAABBmin.x/2);
-	szescianAABBmin.y -= abs(szescianAABBmin.y/2);
-	szescianAABBmin.z -= abs(szescianAABBmin.z/2);
-
-	szescianAABBmax.x += abs(szescianAABBmax.x/2);
-	szescianAABBmax.y += abs(szescianAABBmax.y/2);
-	szescianAABBmax.z += abs(szescianAABBmax.z/2);
 	szescianAABB = Vec3(graczX,graczY,graczZ);
+	szescianAABBmin.x = pozycja.x - szescianAABB.x/2;
+	szescianAABBmin.y = pozycja.y - szescianAABB.y/2;
+	szescianAABBmin.z = pozycja.z - szescianAABB.z/2;
 
-	
+	szescianAABBmax.x = pozycja.x + szescianAABB.x/2;
+	szescianAABBmax.y = pozycja.y + szescianAABB.y/2;
+	szescianAABBmax.z = pozycja.z + szescianAABB.z/2;
 }
 
 ///////////////////////////////////////
@@ -58,11 +55,14 @@ void Gracz::debugRysuj()
 	glPushMatrix();
 		glColor3f(0.0f, 0.0f, 1.0f);
 		glTranslatef(srodek.x, srodek.y, srodek.z);
-		glScalef(
+		/*glScalef(
 			szescianAABB.x,
 			szescianAABB.y,
-			szescianAABB.z);
-
+			szescianAABB.z);*/
+		glScalef(
+			szescianAABBmax.x - szescianAABBmin.x,
+			szescianAABBmax.y - szescianAABBmin.y, 
+			szescianAABBmax.z - szescianAABBmin.z);
 		glutWireCube(1.0f);
 	glPopMatrix();
 }
@@ -114,7 +114,13 @@ void Gracz::reakcjaNakolizje(ObiektFizyczny* obiekt)
 			glTranslatef(obiekt->pozycja.x,obiekt->pozycja.y,obiekt->pozycja.z);
 			glutSolidCube(1.0f);
 		glPopMatrix();
-		
+		break;
+	case TypyObiektow::typKamien:
+		glPushMatrix();
+			glColor3f(1.0f,0.0f,0.0f);
+			glTranslatef(obiekt->pozycja.x,obiekt->pozycja.y,obiekt->pozycja.z);
+			glutSolidCube(1.0f);
+		glPopMatrix();
 		break;
 	}
 }

@@ -32,8 +32,9 @@ void ObiektFizyczny::rysuj()
 	(this->*wskNaRysuj)(); // rysuje aktualny obiekt
 	if(dzieci.empty() == false)
 	{
-		vector<ObiektFizyczny*>::iterator it;
-		for(it = dzieci.begin(); it != dzieci.end(); ++it);
+		vector<ObiektFizyczny*>::iterator it = dzieci.begin();
+		for(int i = 0; i < dzieci.size(); it++, i++)
+		//for(it = dzieci.begin(); it != dzieci.end(); it++);
 		{
 			(*it)->rysuj();
 		}
@@ -56,8 +57,9 @@ void ObiektFizyczny::debugRysuj()
 	// innych rysuje
 	if(dzieci.empty() == false)
 	{
-		vector<ObiektFizyczny*>::iterator it;
-		for(it = dzieci.begin(); it != dzieci.end(); ++it);
+		vector<ObiektFizyczny*>::iterator it = dzieci.begin();
+		//for(it = dzieci.begin(); it != dzieci.end(); it++);
+		for(int i = 0; i < dzieci.size(); it++, i++)
 		{
 			(*it)->debugRysuj();
 		}
@@ -71,6 +73,7 @@ bool ObiektFizyczny::sprawdzKolizje(Gracz* gracz)
 	// b) obiekt nie ma dzieci: to znaczy ze to z nim koliduje, jest najmniejsza czescia
 	// z drzewa wiec dodaje AKTUALNY(kolidujacy) obiekt do obiektow kolidujacych z graczem
 	// gracz to potem obsluguje
+	bool temp = (this->typObiektu == TypyObiektow::typKamien);
 	if(	szescianAABBmax.x >= gracz->szescianAABBmin.x 
 		&&
 		szescianAABBmin.x <= gracz->szescianAABBmax.x 
@@ -93,8 +96,9 @@ bool ObiektFizyczny::sprawdzKolizje(Gracz* gracz)
 		else
 		{
 			//jezeli sa to wykonuje kolizje dzieci
-			vector<ObiektFizyczny*>::iterator it;
-			for(it = dzieci.begin(); it != dzieci.end(); ++it)
+			vector<ObiektFizyczny*>::iterator it = dzieci.begin();
+			//for(it = dzieci.begin(); it != dzieci.end(); it++)
+			for(int i = 0; i < dzieci.size(); it++, i++)
 			{
 				(*it)->sprawdzKolizje(gracz);
 			}
@@ -131,8 +135,10 @@ void ObiektFizyczny::rysujKamien()
 {
 	glPushMatrix();
 		Vec3 srodek = zwrocSrodek();
+		glColor3f(0.674f, 0.647f, 0.647f);
 		glTranslatef(srodek.x, srodek.y, srodek.z);
-		glutSolidSphere(5.0f,15,15);
+		glScalef(wielkoscKamienia.x, wielkoscKamienia.y, wielkoscKamienia.z);
+		glutSolidSphere(0.5f,15,15); // tutaj rysuje nie od 1.0f tylk 0.5f poniewaz skaluje do PROMIENIA nie cieciwy!!
 	glPopMatrix();
 }
 Vec3 ObiektFizyczny::zwrocSrodekAABB()
@@ -162,7 +168,8 @@ void ObiektFizyczny::dodajObiekt(ObiektFizyczny* obiekt)
 	}
 	else
 	{
-		printf("dodajObiekt - probowalem dodac do obiektu taki obiekt ktory sie w nim nie zawiera");
+		printf("dodajObiekt - probowalem dodac do obiektu taki obiekt(%.0f,%.0f,%.0f) ktory sie w nim(%.0f,%.0f,%.0f) nie zawiera\n"
+			,obiekt->pozycja.x, obiekt->pozycja.y, obiekt->pozycja.z, this->pozycja.x, this->pozycja.y, this->pozycja.z);
 	}
 	
 }

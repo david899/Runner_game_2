@@ -1,4 +1,3 @@
-
 enum TypyObiektow
 {
 	typPole = 0,
