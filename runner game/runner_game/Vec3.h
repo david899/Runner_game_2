@@ -28,40 +28,6 @@ public:
 		// przyjmuje punkty, zwraca wektor z nich
 		return Vec3(dokad - skad);
 	}
-	/*void dodajKat(float kat, char wybor_x_y_z)
-	{
-		float r = biegunowy_promien(wybor_x_y_z);
-		float phi = biegunowy_phi(wybor_x_y_z);
-		if(wybor_x_y_z == 'x')
-		{
-			return 
-		}
-	}
-	float biegunowy_promien(char wybor_x_y_z)
-	{
-		if(wybor_x_y_z == 'x')
-			return sqrt(pow(y,2)+pow(z,2));
-		if(wybor_x_y_z == 'y')
-			return sqrt(pow(x,2)+pow(z,2));
-		if(wybor_x_y_z == 'z')
-			return sqrt(pow(x,2)+pow(y,2));
-	}
-	float biegunowy_phi(char wybor_x_y_z)
-	{	
-		if(wybor_x_y_z == 'x')
-			return atan2(z,y);
-		if(wybor_x_y_z == 'y')
-			return atan2(z,x);
-		if(wybor_x_y_z == 'z')
-			return atan2(y,x);
-	}
-	void biegunowy_na_kartez(float r, float phi, char wybor_x_y_z)
-	{
-		if(wybor_x_y_z == 'x')
-		{
-			y = r*cos(phi);
-			z = 
-		}
-	}*/
+	void dodajKat(float kat, char wybor_x_y_z);
 };
 #endif

@@ -18,6 +18,7 @@ Gracz::Gracz()
 	pozycja.x = 15.0f;
 	pozycja.y = graczY / 2;
 	pozycja.z = (*itNaAktualnePole)->pozycja.z;
+	zmianaToruCel = pozycja;
 
 	kierunek.x = 0.0f;
 	kierunek.y = 0.0f;
@@ -70,12 +71,6 @@ void Gracz::dodajPredkosc(float _predkosc)
 {
 	predkosc += _predkosc;
 }
-void Gracz::update()
-{
-	pozycja += kierunek * predkosc;
-	szescianAABBmin += kierunek * predkosc;
-	szescianAABBmax += kierunek * predkosc;
-}
 Vec3 Gracz::zwrocSrodekAABB()
 {
 	Vec3 zwracany = Vec3();
@@ -122,6 +117,43 @@ void Gracz::reakcjaNakolizje(ObiektFizyczny* obiekt)
 			glutSolidCube(1.0f);
 		glPopMatrix();
 		break;
+	}
+}
+void Gracz::update()
+{
+	pozycja += kierunek * predkosc;
+	szescianAABBmin += kierunek * predkosc;
+	szescianAABBmax += kierunek * predkosc;
+
+	printf("gracz.x = %.0f\n",pozycja.x);
+	printf("kierunek = (%.0f,%.0f,%.0f)\n",kierunek.x,kierunek.y,kierunek.z);
+
+	//kierunek prosto (0,0,1)
+	if(kierunek.x != 0.0f && pozycja.x < zmianaToruCel.x + predkosc && pozycja.x > zmianaToruCel.x - predkosc)
+	{
+		pozycja.x = zmianaToruCel.x;
+		kierunek.x = 0.0f;
+		kierunek.z = 1.0f;
+		predkosc /= 2.0;
+	}
+	
+}
+void Gracz::zmienTor(int _kierunekRuchu)
+{ // w lewo 0, w prawo 1
+	if(zmianaToruCel.x == pozycja.x) // jezeli nigdzie sie aktualnie nie przesuwam
+	{
+		if(_kierunekRuchu == 0)
+		{ // ide w lewo
+			kierunek.dodajKat(45.0f,'y');
+			zmianaToruCel.x += 15.0f;
+			predkosc *= 2.0;
+		}
+		else
+		{// ide w prawo
+			kierunek.dodajKat(-45.0f,'y');
+			zmianaToruCel.x += -15.0f;
+			predkosc *= 2.0;
+		}
 	}
 }
 

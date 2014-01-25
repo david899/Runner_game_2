@@ -120,10 +120,14 @@ int main(int argc, char* argv[])
 	void OnKeyUp(unsigned char key, int x, int y) 
 	{
 		keystate[key] = false;
-		if (key == 32) // spacja
+		if (key == 'w') 
 			gracz.dodajPredkosc(0.1f);
-		if (key == 'p')
+		if (key == 's')
 			gracz.predkosc = 0.0f;
+		if (key == 'a')
+			gracz.zmienTor(kierunek_ruchu::w_lewo);
+		if (key == 'd')
+			gracz.zmienTor(kierunek_ruchu::w_prawo);
 
 	#pragma region sterowanie kamera
 		Vec3 cel = gracz.pozycja;

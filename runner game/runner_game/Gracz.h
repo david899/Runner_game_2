@@ -23,6 +23,7 @@ public:
 	float graczX, graczY, graczZ; //szerekosc, dlugosc, wysokosc
 	stack<ObiektFizyczny*> obiektyKolidujace;
 	Mapa* mapa;
+	Vec3 zmianaToruCel;
 private:
 	vector<ObiektFizyczny*>::iterator itNaAktualnePole;
 
@@ -39,5 +40,6 @@ public:
 	Vec3 zwrocSrodekAABB();
 	void sprawdzKolizje();
 	void reakcjaNakolizje(ObiektFizyczny* obiekt);
+	void zmienTor(int kierunek);
 };
 #endif

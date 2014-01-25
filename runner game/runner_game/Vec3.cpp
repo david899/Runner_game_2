@@ -1,4 +1,5 @@
 #include "Vec3.h"
+#include <math.h>
 
 Vec3::Vec3() //newralgicznie, nie zmieniac
 {
@@ -94,15 +95,35 @@ void Vec3::operator-=(const Vec3 &wektor)
 /////////////////////////////////////////////////////
 // metody
 
-/*void Vec3::dodajKat(float kat, char wybor_x_y_z)
+void Vec3::dodajKat(float kat, char os_obrotu)
 {
-	float r = biegunowy_promien(wybor_x_y_z);
-	float phi = biegunowy_phi(wybor_x_y_z);
-	if(wybor_x_y_z == 'x')
+	float r,phi;
+	if(os_obrotu == 'z')
 	{
-		return 
+		r = sqrt(pow(x,2)+pow(y,2));
+		phi = atan2(y,x) + kat;
+		x = r*cos(phi);
+		y = r*sin(phi);
+		return;
+	}
+	if(os_obrotu == 'y')
+	{
+		r = sqrt(pow(z,2)+pow(x,2));
+		phi = atan2(x,z) + kat;
+		z = r*cos(phi);
+		x = r*sin(phi);
+		return;
+	}
+	if(os_obrotu == 'x')
+	{
+		r = sqrt(pow(y,2)+pow(z,2));
+		phi = atan2(z,y) + kat;
+		y = r*cos(phi);
+		z = r*sin(phi);
+		return;
 	}
 }
+/*
 float Vec3::biegunowy_promien(char wybor_x_y_z)
 {
 	if(wybor_x_y_z == 'x')
