@@ -43,8 +43,8 @@ void Mapa::generujPola(int ilePol)
 	for(int i = 0; i < ilePol; i++)
 	{
 		it = wektorPol.begin();
-		wektorPol.erase(it);
-		it = wektorPol.end();
+		//wektorPol.erase(it);
+		it = wektorPol.end() - 1;
 		pozycjaNowegoPola = (*it)->pozycja + przesuniecie;
 		nowePole = new ObiektFizyczny(pozycjaNowegoPola, TypyObiektow::typPole);
 		wypelnijPoleLosowo(nowePole);	// wypelniam losowymi obiektami (moj element losowosci, 

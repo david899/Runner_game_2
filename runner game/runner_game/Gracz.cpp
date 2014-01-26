@@ -82,16 +82,21 @@ Vec3 Gracz::zwrocSrodekAABB()
 void Gracz::sprawdzKolizje()
 {
 	// sprawdzam kolizje od aktualnego pola oraz od kolejnego (aby rozwiazac problem gdy jestem na dwoch polach
-	// jednoczesnie. Jezeli nie ma kolizji na aktualnym to go zwiekszam.
-	if((*itNaAktualnePole)->sprawdzKolizje(this) == true)
+	// jednoczesnie. Jezeli nie ma kolizji na aktualnym to go zwiekszam(przesuwam do kolejnego)
+	
+	if((*itNaAktualnePole)->sprawdzKolizje(this) == true) // sprawdzenie aktualnego
 	{
-		(*(itNaAktualnePole+1))->sprawdzKolizje(this); // kolejne pole
+		(*(itNaAktualnePole+1))->sprawdzKolizje(this); // sprawdzenie kolejnego pola
 	}
 	else
 	{
 		itNaAktualnePole++;
 		(*itNaAktualnePole)->sprawdzKolizje(this);
+		(*(itNaAktualnePole+1))->sprawdzKolizje(this);
+
+		mapa->generujPola(1);
 	}
+	// wykonuje reakcje na kolizje ktora zostala dodana powyzej
 	while(obiektyKolidujace.empty() == false)
 	{
 		reakcjaNakolizje(obiektyKolidujace.top());
@@ -125,8 +130,9 @@ void Gracz::update()
 	szescianAABBmin += kierunek * predkosc;
 	szescianAABBmax += kierunek * predkosc;
 
-	printf("gracz.x = %.0f\n",pozycja.x);
-	printf("kierunek = (%.0f,%.0f,%.0f)\n",kierunek.x,kierunek.y,kierunek.z);
+	//printf("gracz.x = %.0f\n",pozycja.x);
+	printf("gracz.z = %.0f\n",pozycja.z);
+	//printf("kierunek = (%.0f,%.0f,%.0f)\n",kierunek.x,kierunek.y,kierunek.z);
 
 	//kierunek prosto (0,0,1)
 	if(kierunek.x != 0.0f && pozycja.x < zmianaToruCel.x + predkosc && pozycja.x > zmianaToruCel.x - predkosc)

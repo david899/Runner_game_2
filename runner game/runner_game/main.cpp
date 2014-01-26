@@ -265,7 +265,7 @@ void OnRender()
 		if(debug)
 		{
 			gracz.mapa->debugRysuj();
-			gracz.debugRysuj();
+ 			gracz.debugRysuj();
 		}
 	#pragma endregion
 	
