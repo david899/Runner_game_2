@@ -15,6 +15,8 @@ Gracz::Gracz()
 
 	// pozycja srodka gracza
 	itNaAktualnePole = mapa->zwrocItNaPolePoczatkowe();
+	itNaKolejnePole = itNaAktualnePole;
+	itNaKolejnePole++;
 	pozycja.x = 15.0f;
 	pozycja.y = graczY / 2;
 	pozycja.z = (*itNaAktualnePole)->pozycja.z;
@@ -86,15 +88,23 @@ void Gracz::sprawdzKolizje()
 	
 	if((*itNaAktualnePole)->sprawdzKolizje(this) == true) // sprawdzenie aktualnego
 	{
-		(*(itNaAktualnePole+1))->sprawdzKolizje(this); // sprawdzenie kolejnego pola
+		(*itNaKolejnePole)->sprawdzKolizje(this); // sprawdzenie kolejnego pola
 	}
 	else
 	{
-		itNaAktualnePole++;
-		(*itNaAktualnePole)->sprawdzKolizje(this);
-		(*(itNaAktualnePole+1))->sprawdzKolizje(this);
-
+		++itNaAktualnePole == mapa->wektorPol.end();
+		if(++itNaKolejnePole == mapa->wektorPol.end())
+		{
+			itNaAktualnePole--;
+			itNaKolejnePole--;
+		}
+		else
+		{
+			(*itNaAktualnePole)->sprawdzKolizje(this);
+			(*itNaKolejnePole)->sprawdzKolizje(this);
+		}
 		mapa->generujPola(1);
+		
 	}
 	// wykonuje reakcje na kolizje ktora zostala dodana powyzej
 	while(obiektyKolidujace.empty() == false)

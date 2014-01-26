@@ -1,5 +1,5 @@
 #include "ObiektFizyczny.h"
-
+#include <algorithm>
 
 ObiektFizyczny::ObiektFizyczny(Vec3 _pozycja, TypyObiektow _typObiektu)
 { // po czesci spelnia funkcje fabryki, wypelnia tak obiekt aby byl roznego typu od stringu _typObiektu
@@ -32,9 +32,7 @@ void ObiektFizyczny::rysuj()
 	(this->*wskNaRysuj)(); // rysuje aktualny obiekt
 	if(dzieci.empty() == false)
 	{
-		vector<ObiektFizyczny*>::iterator it = dzieci.begin();
-		for(int i = 0; i < dzieci.size(); it++, i++)
-		//for(it = dzieci.begin(); it != dzieci.end(); it++);
+		for(list<ObiektFizyczny*>::iterator it = dzieci.begin(); it != dzieci.end(); it++)
 		{
 			(*it)->rysuj();
 		}
@@ -57,7 +55,7 @@ void ObiektFizyczny::debugRysuj()
 	// innych rysuje
 	if(dzieci.empty() == false)
 	{
-		vector<ObiektFizyczny*>::iterator it = dzieci.begin();
+		list<ObiektFizyczny*>::iterator it = dzieci.begin();
 		//for(it = dzieci.begin(); it != dzieci.end(); it++);
 		for(int i = 0; i < dzieci.size(); it++, i++)
 		{
@@ -96,9 +94,8 @@ bool ObiektFizyczny::sprawdzKolizje(Gracz* gracz)
 		else
 		{
 			//jezeli sa to wykonuje kolizje dzieci
-			vector<ObiektFizyczny*>::iterator it = dzieci.begin();
-			//for(it = dzieci.begin(); it != dzieci.end(); it++)
-			for(int i = 0; i < dzieci.size(); it++, i++)
+			list<ObiektFizyczny*>::iterator it = dzieci.begin();
+			for(it = dzieci.begin(); it != dzieci.end(); it++)
 			{
 				(*it)->sprawdzKolizje(gracz);
 			}

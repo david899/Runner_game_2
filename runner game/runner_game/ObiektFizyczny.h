@@ -3,7 +3,7 @@
 
 #include "Gracz.h"
 #include "TypyRunner.h"
-#include <vector>
+#include <list>
 #include <stack>
 #include "Vec3.h"
 #include <GL\freeglut.h>
@@ -22,7 +22,7 @@ public:
 	Vec3 szescianAABBmin;
 	Vec3 szescianAABBmax;
 	void (ObiektFizyczny::*wskNaRysuj)();
-	vector<ObiektFizyczny*> dzieci;
+	list<ObiektFizyczny*> dzieci;
 	TypyObiektow typObiektu;
 	Vec3 wielkoscPola;
 	Vec3 wielkoscKamienia;

@@ -17,18 +17,16 @@ Mapa::Mapa()
 }
 void Mapa::rysuj()
 {
-	vector<ObiektFizyczny*>::iterator it = wektorPol.begin();
-	//for(it = wektorPol.begin(); it != wektorPol.end(); it++)
-	for(int i = 0; i < wektorPol.size(); i++, it++)
+	list<ObiektFizyczny*>::iterator it = wektorPol.begin();
+	for(it = wektorPol.begin(); it != wektorPol.end(); it++)
 	{
 		(*it)->rysuj();
 	}
 }
 void Mapa::debugRysuj()
 {
-	vector<ObiektFizyczny*>::iterator it = wektorPol.begin();
-	//for(it = wektorPol.begin(); it != wektorPol.end(); it++)
-	for(int i = 0; i < wektorPol.size(); i++, it++)
+	list<ObiektFizyczny*>::iterator it = wektorPol.begin();
+	for(it = wektorPol.begin(); it != wektorPol.end(); it++)
 	{
 		(*it)->debugRysuj();
 	}
@@ -36,15 +34,16 @@ void Mapa::debugRysuj()
 void Mapa::generujPola(int ilePol)
 {
 	// metoda kasuje pola za graczem oraz dodaje pola przed graczem w ilosci - int ilePol 
-	vector<ObiektFizyczny*>::iterator it;
+	list<ObiektFizyczny*>::iterator it;
 	Vec3 pozycjaNowegoPola = Vec3();
 	Vec3 przesuniecie = Vec3(0,0,10.0f);
 	ObiektFizyczny* nowePole;
 	for(int i = 0; i < ilePol; i++)
 	{
 		it = wektorPol.begin();
-		//wektorPol.erase(it);
-		it = wektorPol.end() - 1;
+		wektorPol.erase(it);
+		it = wektorPol.end();
+		--it;
 		pozycjaNowegoPola = (*it)->pozycja + przesuniecie;
 		nowePole = new ObiektFizyczny(pozycjaNowegoPola, TypyObiektow::typPole);
 		wypelnijPoleLosowo(nowePole);	// wypelniam losowymi obiektami (moj element losowosci, 
@@ -56,7 +55,7 @@ void Mapa::generujPola(int ilePol)
 void Mapa::generujPola(int ileWygenerowac, int ileUsunac)
 {
 	// metoda kasuje pola za graczem i dodaje nowe w zaleznosci od argumentow
-	vector<ObiektFizyczny*>::iterator it;
+	list<ObiektFizyczny*>::iterator it;
 	Vec3 pozycjaNowegoPola = Vec3();
 	Vec3 przesuniecie = Vec3(0,0,10.0f);
 	ObiektFizyczny* nowePole;
@@ -85,9 +84,9 @@ void Mapa::wypelnijPoleLosowo(ObiektFizyczny* poleDoWypelnienia)
 	ObiektFizyczny* obiekt = new ObiektFizyczny(Vec3(x,y,z),TypyObiektow::typKamien);
 	poleDoWypelnienia->dodajObiekt(obiekt);
 }
-vector<ObiektFizyczny*>::iterator Mapa::zwrocItNaPolePoczatkowe()
+list<ObiektFizyczny*>::iterator Mapa::zwrocItNaPolePoczatkowe()
 {
-	vector<ObiektFizyczny*>::iterator it = wektorPol.begin();
+	list<ObiektFizyczny*>::iterator it = wektorPol.begin();
 	return it;
 }
 float Mapa::RandomFloat(float min, float max)

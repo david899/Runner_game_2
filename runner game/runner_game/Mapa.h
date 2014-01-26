@@ -1,6 +1,6 @@
 #ifndef _MAPA_H
 #define _MAPA_H
-#include <vector>
+#include <list>
 #include <random>
 #include <cstdlib>
 using namespace std;
@@ -10,7 +10,7 @@ class Mapa
 {
 public:
 	//zmienne
-	vector<ObiektFizyczny*> wektorPol;
+	list<ObiektFizyczny*> wektorPol;
 	
 	//konstruktory
 	Mapa();
@@ -20,7 +20,7 @@ public:
 	void debugRysuj();
 	void generujPola(int ilePol);
 	void generujPola(int ileWygenerowac, int ileUsunac);
-	vector<ObiektFizyczny*>::iterator zwrocItNaPolePoczatkowe();
+	list<ObiektFizyczny*>::iterator zwrocItNaPolePoczatkowe();
 	float RandomFloat(float min, float max);
 private:
 	static const int iloscPolStartowych = 30  ;

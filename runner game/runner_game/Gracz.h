@@ -6,6 +6,7 @@
 #include <GL\freeglut.h>
 #include <stack>
 #include "Pole.h"
+#include <list>
 
 using namespace std;
 class ObiektFizyczny;
@@ -25,7 +26,8 @@ public:
 	Mapa* mapa;
 	Vec3 zmianaToruCel;
 private:
-	vector<ObiektFizyczny*>::iterator itNaAktualnePole;
+	list<ObiektFizyczny*>::iterator itNaAktualnePole;
+	list<ObiektFizyczny*>::iterator itNaKolejnePole;
 
 	//konstruktory
 public:
