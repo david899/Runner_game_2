@@ -141,16 +141,19 @@ int main(int argc, char* argv[])
 		{
 			cel.y += 15.0f;
 			kamera.idzDo(cel,3000, gracz.getPozycja());
+			kamera.sledzGracza(gracz,true);
 		}
 		if (key == 51) // 3
 		{
-			cel.x += 15.0f;
+			cel.x += 45.0f;
 			kamera.idzDo(cel,3000,gracz.getPozycja());
+			kamera.sledzGracza(gracz,true);
 		}
 		if(key == 52) // 4
 		{
-			cel.x -= 15.0f;
+			cel.x -= 45.0f;
 			kamera.idzDo(cel,3000,gracz.getPozycja());
+			kamera.sledzGracza(gracz,true);
 		}
 	#pragma endregion
 	}

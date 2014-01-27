@@ -29,6 +29,7 @@ Kamera::Kamera()
 	patrzeNaGracza = false;
 	manKierunek; // wektor zerowy
 	manPredkosc = 0.0f;
+	poprzedniaPozycjaGracza = Vec3(0,0,0);
 }
 
 ////////////////////////////////////////////////////
@@ -99,9 +100,13 @@ void Kamera::Update(Gracz gracz)
 {// obsluga ruchu kamery, automatycznego sledzenia gracza jezeli tak jest ustawiona
 	if(sledzeGracza == true)
 	{
-		pozycja.x = gracz.getPozycja().x + odchylenieX;
-		pozycja.y = gracz.getPozycja().y + odchylenieY;
-		pozycja.z = gracz.getPozycja().z + odchylenieZ;
+		//pozycja.x = gracz.getPozycja().x + odchylenieX;
+		//pozycja.y = gracz.getPozycja().y + odchylenieY;
+		//pozycja.z = gracz.getPozycja().z + odchylenieZ;
+		Vec3 przesuniecie;
+		przesuniecie.z = gracz.getPozycja().z - poprzedniaPozycjaGracza.z;
+		pozycja += przesuniecie;
+		poprzedniaPozycjaGracza = gracz.getPozycja();
 	}
 	if(patrzeNaGracza == true)
 	{

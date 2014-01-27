@@ -3,7 +3,7 @@
 
 Mapa::Mapa()
 {
-	grawitacja = -0.1f;
+	grawitacja = -0.05f;
 	Vec3 pos = Vec3(0,0,0);
 	Vec3 przesuniecie = Vec3(0,0,10.0f);
 	// tworzy int iloscPolStartowych pol na przod oraz wypelnia je losowo 

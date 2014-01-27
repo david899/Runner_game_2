@@ -11,7 +11,7 @@ Gracz::Gracz()
 	mapa = new Mapa();
 	naZiemi = true;
 	szereokoscGracza = 3.0f; // szereokosc, grubosc, wysokosc solidCuba ktory jest graczem
-	wysokoscGracza = 16.0f;
+	wysokoscGracza = 10.0f;
 	gruboscGracza = 3.0f;
 
 	// pozycja srodka gracza
@@ -27,7 +27,7 @@ Gracz::Gracz()
 	kierunek.y = 0.0f;
 	kierunek.z = 1.0f;
 
-	predkosc = Vec3(1.3f,0.0f,0.3f);
+	predkosc = Vec3(1.0f,0.0f,0.3f);
 
 	szescianAABB = Vec3(szereokoscGracza,wysokoscGracza,gruboscGracza);
 	szescianAABBmin.x = pozycja.x - szescianAABB.x/2;
@@ -168,9 +168,9 @@ void Gracz::update()
 {
 	predkosc.y += mapa->grawitacja;
 	dodajPozycja(kierunek * predkosc);
-	if(getPozycja().y/2 < 0.0f)
+	if(getPozycja().y - wysokoscGracza/2 < 0.0f)
 	{
-		setYPozycja(0.0f);
+		setYPozycja(wysokoscGracza/2);
 		predkosc.y = 0.0f;
 		naZiemi = true;
 	}
@@ -187,11 +187,11 @@ void Gracz::update()
 }
 void Gracz::zmienTor(int _kierunekRuchu)
 { // w lewo 0, w prawo 1
-	if(TorDocelowy.x == getPozycja().x) // jezeli nigdzie sie aktualnie nie przesuwam
-	{
+	//if(TorDocelowy.x == getPozycja().x) // jezeli nigdzie sie aktualnie nie przesuwam
+	//{
 		if(_kierunekRuchu == 0)
 		{ // ide w lewo
-			if(getPozycja().x < 30.0f)
+			if(getPozycja().x < 30.0f && TorDocelowy.x < 30.0f)
 			{
 				kierunek.x = 1.0f;
 				TorDocelowy.x += 15.0f;
@@ -199,20 +199,20 @@ void Gracz::zmienTor(int _kierunekRuchu)
 		}
 		else
 		{// ide w prawo
-			if(getPozycja().x > 0.0f)
+			if(getPozycja().x > 0.0f && TorDocelowy.x > 0.0f)
 			{
 				kierunek.x = -1.0f;
 				TorDocelowy.x += -15.0f;
 			}
 		}
-	}
+	//}
 }
 void Gracz::skocz()
 {
 	if(naZiemi)
 	{
 		kierunek.y = 1.0f;
-		predkosc.y += 2.5f;
+		predkosc.y = 1.2f;
 		naZiemi = false;
 	}
 }

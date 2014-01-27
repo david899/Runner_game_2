@@ -13,6 +13,7 @@ private:
 	bool sledzeGracza;
 	Vec3 manKierunek; // do manualnego ruchu
 	float manPredkosc; // tu tez
+	Vec3 poprzedniaPozycjaGracza;
 	//dodac trzeci wektor pochylenia kamery? 
 	
 public:
