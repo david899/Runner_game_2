@@ -12,7 +12,12 @@ Mapa::Mapa()
 		ObiektFizyczny* pole = new ObiektFizyczny(pos,typPole);
 		pos += przesuniecie;
 		wypelnijPoleLosowo(pole);
+		if(i == 5)
+		{
+			pole->dodajAkcje(1);
+		}
 		wektorPol.push_back(pole);
+		
 	}
 	// w powyzszej petli powineinem jeszcze dodawac inne obiekty do moich pol
 }

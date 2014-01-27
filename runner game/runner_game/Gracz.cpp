@@ -6,8 +6,9 @@
 #include <math.h>
 #include "Mapa.h"
 
-Gracz::Gracz()
+Gracz::Gracz(Kamera* _kamera)
 {
+	kamera = _kamera;
 	mapa = new Mapa();
 	naZiemi = true;
 	szereokoscGracza = 3.0f; // szereokosc, grubosc, wysokosc solidCuba ktory jest graczem
@@ -37,6 +38,13 @@ Gracz::Gracz()
 	szescianAABBmax.x = pozycja.x + szescianAABB.x/2;
 	szescianAABBmax.y = pozycja.y + szescianAABB.y/2;
 	szescianAABBmax.z = pozycja.z + szescianAABB.z/2;
+
+	// definiuje ktore klawisze sa odblokowane a ktore zablokowane na starcie
+	zmienStanKlawisza('w', true);
+	zmienStanKlawisza('s', true);
+	zmienStanKlawisza('a', false);
+	zmienStanKlawisza('d', false);
+	zmienStanKlawisza(32, true); //spacja
 }
 #pragma region sety i gety
 void Gracz::setXPozycja(float _x)
@@ -216,4 +224,26 @@ void Gracz::skocz()
 		naZiemi = false;
 	}
 }
+#pragma region obsluga klawiszy
+void Gracz::obslugaKlawiszy(unsigned char klawisz)
+{
+	if(stanKlawiszy[klawisz]) // sprawdza czy przychodzacy klawisz jest odblokowany, jak tka to wykonuje
+	{
+		if (klawisz == 'w') 
+			predkosc.z += 0.15f;
+		if (klawisz == 's')
+			predkosc.z = 0.0f;
+		if (klawisz == 'a')
+			zmienTor(w_lewo);
+		if (klawisz == 'd')
+			zmienTor(w_prawo);
+		if (klawisz == 32) // spacja
+			skocz();
+	}
+}
+void Gracz::zmienStanKlawisza(unsigned char klawisz, bool stan)
+{// blokuje lub odblokowuje podany klawisz w zaleznosci od podanego stanu, false = zablokowany, true = odblokowany
+	stanKlawiszy[klawisz] = stan;
+}
+#pragma endregion
 

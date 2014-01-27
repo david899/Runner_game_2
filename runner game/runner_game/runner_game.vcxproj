@@ -86,7 +86,6 @@
     <ClCompile Include="Mapa.cpp" />
     <ClCompile Include="Obiekt.cpp" />
     <ClCompile Include="ObiektFizyczny.cpp" />
-    <ClCompile Include="Pole.cpp" />
     <ClCompile Include="Vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -96,7 +95,6 @@
     <ClInclude Include="Mapa.h" />
     <ClInclude Include="Obiekt.h" />
     <ClInclude Include="ObiektFizyczny.h" />
-    <ClInclude Include="Pole.h" />
     <ClInclude Include="TypyRunner.h" />
     <ClInclude Include="Vec3.h" />
   </ItemGroup>

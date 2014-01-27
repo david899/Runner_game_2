@@ -39,7 +39,6 @@
 #include "Kamera.h"
 #include "Mapa.h"
 #include "Obiekt.h"
-#include "Pole.h"
 #include "ObiektFizyczny.h"
 
 void OnRender();
@@ -67,8 +66,9 @@ void OnReshape(int width, int height)
 #pragma endregion
 using namespace std;
 
-Gracz gracz = Gracz();
 Kamera kamera = Kamera();
+Gracz gracz = Gracz(&kamera);
+
 double czasGry = 0.0; // aktualny czas (a dokladniej - czas z ostatniego wywolania Update())
 bool debug = false;
 
@@ -120,16 +120,7 @@ int main(int argc, char* argv[])
 	void OnKeyUp(unsigned char key, int x, int y) 
 	{
 		keystate[key] = false;
-		if (key == 'w') 
-			gracz.predkosc.z += 0.15f;
-		if (key == 's')
-			gracz.predkosc.z = 0.0f;
-		if (key == 'a')
-			gracz.zmienTor(w_lewo);
-		if (key == 'd')
-			gracz.zmienTor(w_prawo);
-		if (key == 32) // spacja
-			gracz.skocz();
+		gracz.obslugaKlawiszy(key);
 
 	#pragma region sterowanie kamera
 		Vec3 cel = gracz.getPozycja();

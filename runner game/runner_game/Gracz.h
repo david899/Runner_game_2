@@ -5,7 +5,6 @@
 #include "Vec3.h"
 #include <GL\freeglut.h>
 #include <stack>
-#include "Pole.h"
 #include <list>
 
 using namespace std;
@@ -25,16 +24,20 @@ public:
 	Mapa* mapa;
 	Vec3 TorDocelowy;
 	bool naZiemi;
+	Kamera* kamera;
+	
 private:
+	bool stanKlawiszy[256];
 	list<ObiektFizyczny*>::iterator itNaAktualnePole;
 	list<ObiektFizyczny*>::iterator itNaKolejnePole;
 	Vec3 pozycja; // pozycja gracza jest jego srodkowym punktem (srodek z x,y,z)
 	// wazna rzecz o pozycji - odwolywac sie do niej JEDYNIE przez funkcje, bo funkcja zalatwia
 	// synchronizowanie polozenia szescianuAABB wraz z polozeniem
+	
 
 	//konstruktory
 public:
-	Gracz();
+	Gracz(Kamera* _kamera);
 
 	//metody
 public:
@@ -52,5 +55,7 @@ public:
 	void reakcjaNakolizje(ObiektFizyczny* obiekt);
 	void zmienTor(int kierunek);
 	void skocz();
+	void obslugaKlawiszy(unsigned char klawisz);
+	void zmienStanKlawisza(unsigned char klawisz, bool stan);
 };
 #endif

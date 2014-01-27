@@ -1,5 +1,9 @@
 #include "ObiektFizyczny.h"
 #include <algorithm>
+#include "Gracz.h"
+#include "Kamera.h"
+
+
 
 ObiektFizyczny::ObiektFizyczny(Vec3 _pozycja, TypyObiektow _typObiektu)
 { // po czesci spelnia funkcje fabryki, wypelnia tak obiekt aby byl roznego typu od stringu _typObiektu
@@ -7,6 +11,7 @@ ObiektFizyczny::ObiektFizyczny(Vec3 _pozycja, TypyObiektow _typObiektu)
 	// deklaracja gówna
 	wielkoscPola = Vec3(30.0f, 40.0f, 10.0f);
 	wielkoscKamienia = Vec3(5.0f, 5.0f, 5.0f);
+	wskNaAkcje = &ObiektFizyczny::akcjaPusta;
 	// koniec deklaracji szamba
 	
 	pozycja = _pozycja;
@@ -84,6 +89,7 @@ bool ObiektFizyczny::sprawdzKolizje(Gracz* gracz)
 	{
 		// kolizja wystapila
 
+		(this->*wskNaAkcje)(gracz, gracz->kamera);
 		if(dzieci.empty())
 		{
 			// wykonuje swoja kolizje
@@ -123,19 +129,6 @@ Vec3 ObiektFizyczny::zwrocSrodek()
 	}
 	
 }
-void ObiektFizyczny::rysujPole()
-{ // pola nie rysuje
-}
-void ObiektFizyczny::rysujKamien()
-{
-	glPushMatrix();
-		Vec3 srodek = zwrocSrodek();
-		glColor3f(0.674f, 0.647f, 0.647f);
-		glTranslatef(srodek.x, srodek.y, srodek.z);
-		glScalef(wielkoscKamienia.x, wielkoscKamienia.y, wielkoscKamienia.z);
-		glutSolidSphere(0.5f,15,15); // tutaj rysuje nie od 1.0f tylk 0.5f poniewaz skaluje do PROMIENIA nie cieciwy!!
-	glPopMatrix();
-}
 Vec3 ObiektFizyczny::zwrocSrodekAABB()
 {
 	Vec3 zwracany = Vec3();
@@ -168,3 +161,45 @@ void ObiektFizyczny::dodajObiekt(ObiektFizyczny* obiekt)
 	}
 	
 }
+
+#pragma region metody do wsk na rysuj
+void ObiektFizyczny::rysujPole()
+{ // pola nie rysuje
+}
+void ObiektFizyczny::rysujKamien()
+{
+	glPushMatrix();
+		Vec3 srodek = zwrocSrodek();
+		glColor3f(0.674f, 0.647f, 0.647f);
+		glTranslatef(srodek.x, srodek.y, srodek.z);
+		glScalef(wielkoscKamienia.x, wielkoscKamienia.y, wielkoscKamienia.z);
+		glutSolidSphere(0.5f,15,15); // tutaj rysuje nie od 1.0f tylk 0.5f poniewaz skaluje do PROMIENIA nie cieciwy!!
+	glPopMatrix();
+}
+#pragma endregion
+#pragma region metody do wsk na akcje
+
+void ObiektFizyczny::dodajAkcje(int i)
+{ // brzydkie to to ale nie mam czasu na kombinowanie czegos ladniejszego wiec roboczo
+	switch(i)
+	{
+		case 1:
+			wskNaAkcje = &ObiektFizyczny::akcjaFaza1Pocz;
+			break;
+	}
+	
+}
+void ObiektFizyczny::akcjaPusta(Gracz* gracz, Kamera* kamera)
+{ // niiiiiiic
+}
+void ObiektFizyczny::akcjaFaza1Pocz(Gracz* gracz, Kamera* kamera)
+{
+	gracz->zmienStanKlawisza('a', false);
+	gracz->zmienStanKlawisza('d', false);
+
+	Vec3 cel = gracz->getPozycja();
+	cel.x -= 45.0f;
+	kamera->idzDo(cel, 15000, gracz->getPozycja());
+	kamera->sledzGracza(*gracz, true);
+}
+#pragma endregion

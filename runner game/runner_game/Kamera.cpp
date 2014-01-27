@@ -100,23 +100,24 @@ void Kamera::Update(Gracz gracz)
 {// obsluga ruchu kamery, automatycznego sledzenia gracza jezeli tak jest ustawiona
 	if(sledzeGracza == true)
 	{
-		//pozycja.x = gracz.getPozycja().x + odchylenieX;
-		//pozycja.y = gracz.getPozycja().y + odchylenieY;
-		//pozycja.z = gracz.getPozycja().z + odchylenieZ;
 		Vec3 przesuniecie;
 		przesuniecie.z = gracz.getPozycja().z - poprzedniaPozycjaGracza.z;
 		pozycja += przesuniecie;
-		poprzedniaPozycjaGracza = gracz.getPozycja();
+		
 	}
 	if(patrzeNaGracza == true)
 	{
-		cel = gracz.getPozycja();
+		// cel = gracz.getPozycja(); // wtedy poruszam kamera gdy skacze itd
+		Vec3 przesuniecie;
+		przesuniecie.z = gracz.getPozycja().z - poprzedniaPozycjaGracza.z;
+		cel += przesuniecie;
 	}
 	// jezeli nie ma obu powyzszych to jest inne sterowanie, np klawiszami, jak klawisze nie zmieniaja pozycji to bêdzie staæ
 	else if (sledzeGracza == false)
 	{
 		pozycja += manKierunek * manPredkosc;
 	}
+	poprzedniaPozycjaGracza = gracz.getPozycja();
 }
 void Kamera::manualnyRuch(Vec3 _kierunek, float _predkosc)
 { // musze tutaj przesy³aæ zera je¿eli chce zatrzymaæ, najlepiej w funkcji jak puszczam klawisz

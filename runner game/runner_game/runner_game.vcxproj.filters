@@ -36,9 +36,6 @@
     <ClCompile Include="ObiektFizyczny.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Pole.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Obiekt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -63,9 +60,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TypyRunner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Pole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Obiekt.h">
