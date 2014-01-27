@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
 			gracz.skocz();
 
 	#pragma region sterowanie kamera
-		Vec3 cel = gracz.pozycja;
+		Vec3 cel = gracz.getPozycja();
 		if(key == 49)// 1 na numercznej
 		{
 			kamera.idzDo(gracz,3000,true,true);
@@ -140,17 +140,17 @@ int main(int argc, char* argv[])
 		if (key == 50) // 2 na numerycznej
 		{
 			cel.y += 15.0f;
-			kamera.idzDo(cel,3000, gracz.pozycja);
+			kamera.idzDo(cel,3000, gracz.getPozycja());
 		}
 		if (key == 51) // 3
 		{
 			cel.x += 15.0f;
-			kamera.idzDo(cel,3000,gracz.pozycja);
+			kamera.idzDo(cel,3000,gracz.getPozycja());
 		}
 		if(key == 52) // 4
 		{
 			cel.x -= 15.0f;
-			kamera.idzDo(cel,3000,gracz.pozycja);
+			kamera.idzDo(cel,3000,gracz.getPozycja());
 		}
 	#pragma endregion
 	}

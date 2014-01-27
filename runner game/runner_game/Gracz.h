@@ -15,7 +15,6 @@ class Gracz
 {
 public: 
 	//zmienne 
-	Vec3 pozycja; // pozycja gracza jest jego srodkowym punktem (srodek z x,y,z)
 	Vec3 kierunek;
 	Vec3 predkosc;
 	Vec3 szescianAABB;
@@ -29,6 +28,9 @@ public:
 private:
 	list<ObiektFizyczny*>::iterator itNaAktualnePole;
 	list<ObiektFizyczny*>::iterator itNaKolejnePole;
+	Vec3 pozycja; // pozycja gracza jest jego srodkowym punktem (srodek z x,y,z)
+	// wazna rzecz o pozycji - odwolywac sie do niej JEDYNIE przez funkcje, bo funkcja zalatwia
+	// synchronizowanie polozenia szescianuAABB wraz z polozeniem
 
 	//konstruktory
 public:
@@ -36,6 +38,12 @@ public:
 
 	//metody
 public:
+	void setXPozycja(float _x);
+	void setYPozycja(float _y);
+	void setZPozycja(float _z);
+	void setPozycja(Vec3 nowaWartosc);
+	Vec3 getPozycja();
+	void dodajPozycja(Vec3 wektorDoDodania);
 	void rysuj();
 	void debugRysuj();
 	void update();

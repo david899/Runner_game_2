@@ -38,13 +38,48 @@ Gracz::Gracz()
 	szescianAABBmax.y = pozycja.y + szescianAABB.y/2;
 	szescianAABBmax.z = pozycja.z + szescianAABB.z/2;
 }
-
+#pragma region sety i gety
+void Gracz::setXPozycja(float _x)
+{
+	pozycja.x = _x;
+	szescianAABBmin.x = pozycja.x - szescianAABB.x/2;
+	szescianAABBmax.x = pozycja.x + szescianAABB.x/2;
+}
+void Gracz::setYPozycja(float _y)
+{
+	pozycja.y = _y;
+	szescianAABBmin.y = pozycja.y - szescianAABB.y/2;
+	szescianAABBmax.y = pozycja.y + szescianAABB.y/2;
+}
+void Gracz::setZPozycja(float _z)
+{
+	pozycja.z = _z;
+	szescianAABBmin.z = pozycja.z - szescianAABB.z/2;
+	szescianAABBmax.z = pozycja.z + szescianAABB.z/2;
+}
+void Gracz::setPozycja(Vec3 nowaWartosc)
+{
+	pozycja = nowaWartosc;
+	szescianAABBmin = pozycja - szescianAABB/2;
+	szescianAABBmax = pozycja + szescianAABB/2;
+}
+Vec3 Gracz::getPozycja()
+{
+	return pozycja;
+}
+void Gracz::dodajPozycja(Vec3 wektorDoDodania)
+{
+	pozycja += wektorDoDodania;
+	szescianAABBmin += wektorDoDodania;
+	szescianAABBmax += wektorDoDodania;
+}
+#pragma endregion
 ///////////////////////////////////////
 
 void Gracz::rysuj()
 {
 	glPushMatrix();
-		glTranslatef(pozycja.x, pozycja.y, pozycja.z);
+	glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
 		glScalef(szereokoscGracza, wysokoscGracza, gruboscGracza);
 		glColor3f(1.0f,0.0f,0.0f);
 		glutSolidCube(1.0f);
@@ -98,7 +133,7 @@ void Gracz::sprawdzKolizje()
 
 			// usuwam jedno pole oraz generuje jedno do przodu
 			list<ObiektFizyczny*>::iterator itPoczatek = mapa->zwrocItNaPolePoczatkowe();
-			if(pozycja.z > (*itPoczatek)->pozycja.z + 30) // nie kasuje sie od razu tylko jak gracz odjedzie od poczatkowego troche
+			if(getPozycja().z > (*itPoczatek)->pozycja.z + 30) // nie kasuje sie od razu tylko jak gracz odjedzie od poczatkowego troche
 				mapa->generujPola(1);
 		}
 	}
@@ -132,36 +167,31 @@ void Gracz::reakcjaNakolizje(ObiektFizyczny* obiekt)
 void Gracz::update()
 {
 	predkosc.y += mapa->grawitacja;
-	pozycja += kierunek * predkosc;
-	szescianAABBmin += kierunek * predkosc;
-	szescianAABBmax += kierunek * predkosc;
-	if(pozycja.y/2 < 0.0f)
+	dodajPozycja(kierunek * predkosc);
+	if(getPozycja().y/2 < 0.0f)
 	{
-		pozycja.y = 0.0f;
+		setYPozycja(0.0f);
 		predkosc.y = 0.0f;
 		naZiemi = true;
 	}
 
 	//kierunek prosto (0,0,1)
 	if(kierunek.x != 0.0f //je¿eli ide w bok (nie ide prosto)
-		&& pozycja.x < TorDocelowy.x + predkosc.x// jezeli przekraczam lewy rog mapy
-		&& pozycja.x > TorDocelowy.x - predkosc.x) // jezeli przekraczam prawy rog mapy
+		&& getPozycja().x < TorDocelowy.x + predkosc.x// jezeli przekraczam lewy rog mapy
+		&& getPozycja().x > TorDocelowy.x - predkosc.x) // jezeli przekraczam prawy rog mapy
 	{ // to 
-		float roznica = TorDocelowy.x - pozycja.x;
-		pozycja.x += roznica;
-		szescianAABBmin.x += roznica;
-		szescianAABBmax.x += roznica;
+		setXPozycja(TorDocelowy.x);
 		kierunek.x = 0.0f;
 		kierunek.z = 1.0f;
 	}
 }
 void Gracz::zmienTor(int _kierunekRuchu)
 { // w lewo 0, w prawo 1
-	if(TorDocelowy.x == pozycja.x) // jezeli nigdzie sie aktualnie nie przesuwam
+	if(TorDocelowy.x == getPozycja().x) // jezeli nigdzie sie aktualnie nie przesuwam
 	{
 		if(_kierunekRuchu == 0)
 		{ // ide w lewo
-			if(pozycja.x < 30.0f)
+			if(getPozycja().x < 30.0f)
 			{
 				kierunek.x = 1.0f;
 				TorDocelowy.x += 15.0f;
@@ -169,7 +199,7 @@ void Gracz::zmienTor(int _kierunekRuchu)
 		}
 		else
 		{// ide w prawo
-			if(pozycja.x > 0.0f)
+			if(getPozycja().x > 0.0f)
 			{
 				kierunek.x = -1.0f;
 				TorDocelowy.x += -15.0f;

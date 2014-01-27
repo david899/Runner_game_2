@@ -40,9 +40,9 @@ void Kamera::idzDo(Gracz gracz, int _milisekundy, bool _patrzNaGracza, bool _sle
 {
 	sledzeGracza = _sledzGracza;
 	patrzeNaGracza = _patrzNaGracza;
-	Vec3 pozycjaZaGraczem = Vec3(	gracz.pozycja.x + odchylenieX, 
-									gracz.pozycja.y + odchylenieY, 
-									gracz.pozycja.z + odchylenieZ);
+	Vec3 pozycjaZaGraczem = Vec3(	gracz.getPozycja().x + odchylenieX, 
+									gracz.getPozycja().y + odchylenieY, 
+									gracz.getPozycja().z + odchylenieZ);
 	if(_milisekundy <= 0)
 	{
 		pozycja = pozycjaZaGraczem;
@@ -82,7 +82,7 @@ void Kamera::idzDo(Vec3 _pozycjaDocelowa, int _milisekundy, Vec3 _cel)
 }
 void Kamera::sledzGracza(Gracz gracz, bool idzDoGracza)
 {
-	cel = gracz.pozycja;
+	cel = gracz.getPozycja();
 	patrzeNaGracza = true;
 
 	if(idzDoGracza = true)
@@ -99,13 +99,13 @@ void Kamera::Update(Gracz gracz)
 {// obsluga ruchu kamery, automatycznego sledzenia gracza jezeli tak jest ustawiona
 	if(sledzeGracza == true)
 	{
-		pozycja.x = gracz.pozycja.x + odchylenieX;
-		pozycja.y = gracz.pozycja.y + odchylenieY;
-		pozycja.z = gracz.pozycja.z + odchylenieZ;
+		pozycja.x = gracz.getPozycja().x + odchylenieX;
+		pozycja.y = gracz.getPozycja().y + odchylenieY;
+		pozycja.z = gracz.getPozycja().z + odchylenieZ;
 	}
 	if(patrzeNaGracza == true)
 	{
-		cel = gracz.pozycja;
+		cel = gracz.getPozycja();
 	}
 	// jezeli nie ma obu powyzszych to jest inne sterowanie, np klawiszami, jak klawisze nie zmieniaja pozycji to bêdzie staæ
 	else if (sledzeGracza == false)
