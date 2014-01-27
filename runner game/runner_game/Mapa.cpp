@@ -3,12 +3,13 @@
 
 Mapa::Mapa()
 {
+	grawitacja = -0.1f;
 	Vec3 pos = Vec3(0,0,0);
 	Vec3 przesuniecie = Vec3(0,0,10.0f);
 	// tworzy int iloscPolStartowych pol na przod oraz wypelnia je losowo 
 	for(int i = 0; i < iloscPolStartowych; i++)
 	{
-		ObiektFizyczny* pole = new ObiektFizyczny(pos,TypyObiektow::typPole);
+		ObiektFizyczny* pole = new ObiektFizyczny(pos,typPole);
 		pos += przesuniecie;
 		wypelnijPoleLosowo(pole);
 		wektorPol.push_back(pole);
@@ -45,7 +46,7 @@ void Mapa::generujPola(int ilePol)
 		it = wektorPol.end();
 		--it;
 		pozycjaNowegoPola = (*it)->pozycja + przesuniecie;
-		nowePole = new ObiektFizyczny(pozycjaNowegoPola, TypyObiektow::typPole);
+		nowePole = new ObiektFizyczny(pozycjaNowegoPola, typPole);
 		wypelnijPoleLosowo(nowePole);	// wypelniam losowymi obiektami (moj element losowosci, 
 										//pozniej trzeba dopasowac tak aby mapa byla "przejezdna"
 		wektorPol.push_back(nowePole);
@@ -68,7 +69,7 @@ void Mapa::generujPola(int ileWygenerowac, int ileUsunac)
 	{
 		it = wektorPol.end();
 		pozycjaNowegoPola = (*it)->pozycja + przesuniecie;
-		nowePole = new ObiektFizyczny(pozycjaNowegoPola, TypyObiektow::typPole);
+		nowePole = new ObiektFizyczny(pozycjaNowegoPola, typPole);
 		wypelnijPoleLosowo(nowePole);	// wypelniam losowymi obiektami (moj element losowosci, 
 										//pozniej trzeba dopasowac tak aby mapa byla "przejezdna"
 		wektorPol.push_back(nowePole);
@@ -79,9 +80,8 @@ void Mapa::wypelnijPoleLosowo(ObiektFizyczny* poleDoWypelnienia)
 	float x,y,z;
 	x = RandomFloat(poleDoWypelnienia->szescianAABBmin.x, poleDoWypelnienia->szescianAABBmax.x);
 	y = RandomFloat(poleDoWypelnienia->szescianAABBmin.y, poleDoWypelnienia->szescianAABBmax.y);
-	//y = 0.0f;
 	z = RandomFloat(poleDoWypelnienia->szescianAABBmin.z, poleDoWypelnienia->szescianAABBmax.z);
-	ObiektFizyczny* obiekt = new ObiektFizyczny(Vec3(x,y,z),TypyObiektow::typKamien);
+	ObiektFizyczny* obiekt = new ObiektFizyczny(Vec3(x,y,z),typKamien);
 	poleDoWypelnienia->dodajObiekt(obiekt);
 }
 list<ObiektFizyczny*>::iterator Mapa::zwrocItNaPolePoczatkowe()

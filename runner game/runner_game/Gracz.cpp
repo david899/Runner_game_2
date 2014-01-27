@@ -9,26 +9,27 @@
 Gracz::Gracz()
 {
 	mapa = new Mapa();
-	graczX = 3.0f; // szereokosc, grubosc, wysokosc solidCuba ktory jest graczem
-	graczY = 16.0f;
-	graczZ = 3.0f;
+	naZiemi = true;
+	szereokoscGracza = 3.0f; // szereokosc, grubosc, wysokosc solidCuba ktory jest graczem
+	wysokoscGracza = 16.0f;
+	gruboscGracza = 3.0f;
 
 	// pozycja srodka gracza
 	itNaAktualnePole = mapa->zwrocItNaPolePoczatkowe();
 	itNaKolejnePole = itNaAktualnePole;
 	itNaKolejnePole++;
 	pozycja.x = 15.0f;
-	pozycja.y = graczY / 2;
+	pozycja.y = wysokoscGracza / 2;
 	pozycja.z = (*itNaAktualnePole)->pozycja.z;
-	zmianaToruCel = pozycja;
+	TorDocelowy = pozycja;
 
 	kierunek.x = 0.0f;
 	kierunek.y = 0.0f;
 	kierunek.z = 1.0f;
 
-	predkosc = 0.0f;
+	predkosc = Vec3(1.3f,0.0f,0.3f);
 
-	szescianAABB = Vec3(graczX,graczY,graczZ);
+	szescianAABB = Vec3(szereokoscGracza,wysokoscGracza,gruboscGracza);
 	szescianAABBmin.x = pozycja.x - szescianAABB.x/2;
 	szescianAABBmin.y = pozycja.y - szescianAABB.y/2;
 	szescianAABBmin.z = pozycja.z - szescianAABB.z/2;
@@ -44,7 +45,7 @@ void Gracz::rysuj()
 {
 	glPushMatrix();
 		glTranslatef(pozycja.x, pozycja.y, pozycja.z);
-		glScalef(graczX, graczY, graczZ);
+		glScalef(szereokoscGracza, wysokoscGracza, gruboscGracza);
 		glColor3f(1.0f,0.0f,0.0f);
 		glutSolidCube(1.0f);
 	glPopMatrix();
@@ -58,20 +59,12 @@ void Gracz::debugRysuj()
 	glPushMatrix();
 		glColor3f(0.0f, 0.0f, 1.0f);
 		glTranslatef(srodek.x, srodek.y, srodek.z);
-		/*glScalef(
-			szescianAABB.x,
-			szescianAABB.y,
-			szescianAABB.z);*/
 		glScalef(
 			szescianAABBmax.x - szescianAABBmin.x,
 			szescianAABBmax.y - szescianAABBmin.y, 
 			szescianAABBmax.z - szescianAABBmin.z);
 		glutWireCube(1.0f);
 	glPopMatrix();
-}
-void Gracz::dodajPredkosc(float _predkosc)
-{
-	predkosc += _predkosc;
 }
 Vec3 Gracz::zwrocSrodekAABB()
 {
@@ -102,9 +95,12 @@ void Gracz::sprawdzKolizje()
 		{
 			(*itNaAktualnePole)->sprawdzKolizje(this);
 			(*itNaKolejnePole)->sprawdzKolizje(this);
+
+			// usuwam jedno pole oraz generuje jedno do przodu
+			list<ObiektFizyczny*>::iterator itPoczatek = mapa->zwrocItNaPolePoczatkowe();
+			if(pozycja.z > (*itPoczatek)->pozycja.z + 30) // nie kasuje sie od razu tylko jak gracz odjedzie od poczatkowego troche
+				mapa->generujPola(1);
 		}
-		mapa->generujPola(1);
-		
 	}
 	// wykonuje reakcje na kolizje ktora zostala dodana powyzej
 	while(obiektyKolidujace.empty() == false)
@@ -117,15 +113,14 @@ void Gracz::reakcjaNakolizje(ObiektFizyczny* obiekt)
 {
 	switch(obiekt->typObiektu)
 	{
-	case TypyObiektow::typPole:
-		//printf("Wszedlem na pole z = %f",obiekt->zwrocSrodek().z);
+	case typPole:
 		glPushMatrix();
 			glColor3f(1.0f,0.0f,0.0f);
 			glTranslatef(obiekt->pozycja.x,obiekt->pozycja.y,obiekt->pozycja.z);
 			glutSolidCube(1.0f);
 		glPopMatrix();
 		break;
-	case TypyObiektow::typKamien:
+	case typKamien:
 		glPushMatrix();
 			glColor3f(1.0f,0.0f,0.0f);
 			glTranslatef(obiekt->pozycja.x,obiekt->pozycja.y,obiekt->pozycja.z);
@@ -136,40 +131,59 @@ void Gracz::reakcjaNakolizje(ObiektFizyczny* obiekt)
 }
 void Gracz::update()
 {
+	predkosc.y += mapa->grawitacja;
 	pozycja += kierunek * predkosc;
 	szescianAABBmin += kierunek * predkosc;
 	szescianAABBmax += kierunek * predkosc;
-
-	//printf("gracz.x = %.0f\n",pozycja.x);
-	printf("gracz.z = %.0f\n",pozycja.z);
-	//printf("kierunek = (%.0f,%.0f,%.0f)\n",kierunek.x,kierunek.y,kierunek.z);
+	if(pozycja.y/2 < 0.0f)
+	{
+		pozycja.y = 0.0f;
+		predkosc.y = 0.0f;
+		naZiemi = true;
+	}
 
 	//kierunek prosto (0,0,1)
-	if(kierunek.x != 0.0f && pozycja.x < zmianaToruCel.x + predkosc && pozycja.x > zmianaToruCel.x - predkosc)
-	{
-		pozycja.x = zmianaToruCel.x;
+	if(kierunek.x != 0.0f //je¿eli ide w bok (nie ide prosto)
+		&& pozycja.x < TorDocelowy.x + predkosc.x// jezeli przekraczam lewy rog mapy
+		&& pozycja.x > TorDocelowy.x - predkosc.x) // jezeli przekraczam prawy rog mapy
+	{ // to 
+		float roznica = TorDocelowy.x - pozycja.x;
+		pozycja.x += roznica;
+		szescianAABBmin.x += roznica;
+		szescianAABBmax.x += roznica;
 		kierunek.x = 0.0f;
 		kierunek.z = 1.0f;
-		predkosc /= 2.0;
 	}
-	
 }
 void Gracz::zmienTor(int _kierunekRuchu)
 { // w lewo 0, w prawo 1
-	if(zmianaToruCel.x == pozycja.x) // jezeli nigdzie sie aktualnie nie przesuwam
+	if(TorDocelowy.x == pozycja.x) // jezeli nigdzie sie aktualnie nie przesuwam
 	{
 		if(_kierunekRuchu == 0)
 		{ // ide w lewo
-			kierunek.dodajKat(45.0f,'y');
-			zmianaToruCel.x += 15.0f;
-			predkosc *= 2.0;
+			if(pozycja.x < 30.0f)
+			{
+				kierunek.x = 1.0f;
+				TorDocelowy.x += 15.0f;
+			}
 		}
 		else
 		{// ide w prawo
-			kierunek.dodajKat(-45.0f,'y');
-			zmianaToruCel.x += -15.0f;
-			predkosc *= 2.0;
+			if(pozycja.x > 0.0f)
+			{
+				kierunek.x = -1.0f;
+				TorDocelowy.x += -15.0f;
+			}
 		}
+	}
+}
+void Gracz::skocz()
+{
+	if(naZiemi)
+	{
+		kierunek.y = 1.0f;
+		predkosc.y += 2.5f;
+		naZiemi = false;
 	}
 }
 

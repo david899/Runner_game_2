@@ -1,0 +1,9 @@
+Pakiet powinien mieæ poni¿sz¹ strukturê katalogów (proszê o skrupulatne przestrzeganie tej struktury!!!):
+
+/Nazwisko_Imie   ((g³ówny katalog z nazwiskiem i imieniem autora gry (bez polskich znaków))
+/Nazwisko_Imie/bin   (program wykonywalny + wszystkie pliki potrzebne do uruchomienia gry)
+/Nazwisko_Imie/src   (wszystkie pliki Ÿród³owe niezbêdne do skompilowania gry (mog¹ byæ umieszczone w podkatalogach)), z kodów Ÿród³owych proszê usun¹æ wszystkie pliki tymczasowe.
+/Nazwisko_Imie/resources   (dodatkowe zasoby (np. modele 3D obiektow w formacie Blender’a, itp.))
+/Nazwisko_Imie/readme.txt   (plik tekstowy z opisem gry)
+/Nazwisko_Imie/start.bat   (skrypt, którego wywo³anie z g³ównego katalogu spowoduje uruchomienie gry, pierwsz¹ komend¹ w skrypcie mo¿e byæ: cd bin )
+Proszê skompresowaæ pakiet ZIP’em generuj¹c jeden plik: Nazwisko_Imie.zip (zastêpuj¹æ Nazwisko i Imie swoimi, bez polskich znaków). Po rozpakowaniu tego pliku powinien powstaæ g³ówny katalog Nazwisko_Imie\ wraz z ww. podkatalogami.

@@ -121,13 +121,15 @@ int main(int argc, char* argv[])
 	{
 		keystate[key] = false;
 		if (key == 'w') 
-			gracz.dodajPredkosc(0.1f);
+			gracz.predkosc.z += 0.15f;
 		if (key == 's')
-			gracz.predkosc = 0.0f;
+			gracz.predkosc.z = 0.0f;
 		if (key == 'a')
-			gracz.zmienTor(kierunek_ruchu::w_lewo);
+			gracz.zmienTor(w_lewo);
 		if (key == 'd')
-			gracz.zmienTor(kierunek_ruchu::w_prawo);
+			gracz.zmienTor(w_prawo);
+		if (key == 32) // spacja
+			gracz.skocz();
 
 	#pragma region sterowanie kamera
 		Vec3 cel = gracz.pozycja;

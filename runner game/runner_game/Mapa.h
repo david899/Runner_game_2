@@ -11,6 +11,7 @@ class Mapa
 public:
 	//zmienne
 	list<ObiektFizyczny*> wektorPol;
+	float grawitacja;
 	
 	//konstruktory
 	Mapa();

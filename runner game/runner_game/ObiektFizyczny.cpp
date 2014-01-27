@@ -55,9 +55,7 @@ void ObiektFizyczny::debugRysuj()
 	// innych rysuje
 	if(dzieci.empty() == false)
 	{
-		list<ObiektFizyczny*>::iterator it = dzieci.begin();
-		//for(it = dzieci.begin(); it != dzieci.end(); it++);
-		for(int i = 0; i < dzieci.size(); it++, i++)
+		for(list<ObiektFizyczny*>::iterator it = dzieci.begin(); it != dzieci.end(); it++)
 		{
 			(*it)->debugRysuj();
 		}
@@ -71,7 +69,7 @@ bool ObiektFizyczny::sprawdzKolizje(Gracz* gracz)
 	// b) obiekt nie ma dzieci: to znaczy ze to z nim koliduje, jest najmniejsza czescia
 	// z drzewa wiec dodaje AKTUALNY(kolidujacy) obiekt do obiektow kolidujacych z graczem
 	// gracz to potem obsluguje
-	bool temp = (this->typObiektu == TypyObiektow::typKamien);
+	bool temp = (this->typObiektu == typKamien);
 	if(	szescianAABBmax.x >= gracz->szescianAABBmin.x 
 		&&
 		szescianAABBmin.x <= gracz->szescianAABBmax.x 
