@@ -81,6 +81,10 @@ void Kamera::idzDo(Vec3 _pozycjaDocelowa, int _milisekundy, Vec3 _cel)
 	}
 		
 }
+void Kamera::patrzNaGracza(bool wybor)
+{
+	patrzeNaGracza = wybor;
+}
 void Kamera::sledzGracza(Gracz gracz, bool idzDoGracza)
 {
 	cel = gracz.getPozycja();

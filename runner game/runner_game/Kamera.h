@@ -34,6 +34,7 @@ public:
 	void stopSledzGracza();
 	void Update(Gracz gracz);
 	void manualnyRuch(Vec3 _kierunek, float _predkosc);
+	void patrzNaGracza(bool wybor);
 	private: void plynnePrzesuniecieKamery(int _milisekundy, Vec3 _pozycjaDocelowa);
 };
 #endif

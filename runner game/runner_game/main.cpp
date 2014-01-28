@@ -2,21 +2,15 @@
 /*
  TODO ///////////////////////////////////////////////////
 - uzupelnij przeliczanie na biegunowy
-- cala kolizja 
-- doczytywanie sie oraz czyszczenie pol na mapie
 - singleton - gracz, mapa, sprawdzKolizje, kamera itd?
 - kamera powinna moc sie latwiej odnosic do gracza zeby nie przekazywac caly czas go jako argument, mo¿e jakiœ globalny get zwracajacy wskaznik na gracza?
 - kamera wziac pod uwage ze nie do konca dobrze dziala gdy wysle polecenie plynnego lotu gdy jest wykonywany inny plynny lot
-- uzupelnij update kamery
-- get cel, pozycja czy nie da sie zrobic tak zeby wyrzucalo consty ?
-- dopasowac reszte projektu i budowe plikow .h i .cpp tak jak pokazal dr Bazyluk (do przeklepania troche, oprocz samych includow musze pozmieniac klasy na wskazniki do nich)
 - przemysl czy nie wsadziæ gdzieœ wskaŸników zamiast zwyk³ych obiektów
 
  UWAGI //////////////////////////////////////////////////
-- debugRysuj - zamiast obiektow rysuje ich sfery kolizji
+- debugRysuj - rysuje ich szesciany kolizji
 
  DOWIEDZ SIE
-- w sprawdzKolizje przy itNaAktualnePole++ dobrze byloby sprawdzac czy ma to znaczenie, bo inaczej wywala sie gdy natrafia na koniec wektora (it wiekszy niz ostatni element wektora)
  */
 #pragma endregion
  
@@ -80,7 +74,7 @@ int main(int argc, char* argv[])
 	glutInitWindowSize(640, 360);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 
-	glutCreateWindow("Runner v0.1");
+	glutCreateWindow("Runner v0.2");
 
 	glutDisplayFunc(OnRender);
 	glutReshapeFunc(OnReshape);
@@ -99,7 +93,8 @@ int main(int argc, char* argv[])
 	glShadeModel(GL_SMOOTH);
 
 	// Moje inity
-	kamera.sledzGracza(gracz,true);
+	kamera.idzDo(Vec3(-15.0f, 8.0f, 5.0f),0, gracz.getPozycja()); // pozycja poczatkowa kamery
+	kamera.patrzNaGracza(true);
 	glEnable(GL_LIGHT0);
 
 
@@ -137,7 +132,7 @@ int main(int argc, char* argv[])
 		if (key == 51) // 3
 		{
 			cel.x += 45.0f;
-			kamera.idzDo(cel,3000,gracz.getPozycja());
+			kamera.idzDo(cel,15000,gracz.getPozycja());
 			kamera.sledzGracza(gracz,true);
 		}
 		if(key == 52) // 4
@@ -154,7 +149,7 @@ int main(int argc, char* argv[])
 	}
 	void OnSpecialKeyUp(int key, int x, int y) 
 	{
-		if(key = GLUT_KEY_F1)
+		if(key == GLUT_KEY_F1)
 			debug = !debug;
 		keystate_special[key] = false;
 	}

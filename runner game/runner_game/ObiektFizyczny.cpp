@@ -74,7 +74,6 @@ bool ObiektFizyczny::sprawdzKolizje(Gracz* gracz)
 	// b) obiekt nie ma dzieci: to znaczy ze to z nim koliduje, jest najmniejsza czescia
 	// z drzewa wiec dodaje AKTUALNY(kolidujacy) obiekt do obiektow kolidujacych z graczem
 	// gracz to potem obsluguje
-	bool temp = (this->typObiektu == typKamien);
 	if(	szescianAABBmax.x >= gracz->szescianAABBmin.x 
 		&&
 		szescianAABBmin.x <= gracz->szescianAABBmax.x 
@@ -194,12 +193,15 @@ void ObiektFizyczny::akcjaPusta(Gracz* gracz, Kamera* kamera)
 }
 void ObiektFizyczny::akcjaFaza1Pocz(Gracz* gracz, Kamera* kamera)
 {
+	gracz->zmienStanKlawisza('w', true);
+	gracz->zmienStanKlawisza('s', true);
 	gracz->zmienStanKlawisza('a', false);
 	gracz->zmienStanKlawisza('d', false);
+	
 
 	Vec3 cel = gracz->getPozycja();
 	cel.x -= 45.0f;
-	kamera->idzDo(cel, 15000, gracz->getPozycja());
+	kamera->idzDo(cel, 15000, gracz->getPozycja()); // nie dzia³a tutaj 15 sekund?? 
 	kamera->sledzGracza(*gracz, true);
 }
 #pragma endregion

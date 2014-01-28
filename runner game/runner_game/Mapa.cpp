@@ -12,7 +12,7 @@ Mapa::Mapa()
 		ObiektFizyczny* pole = new ObiektFizyczny(pos,typPole);
 		pos += przesuniecie;
 		wypelnijPoleLosowo(pole);
-		if(i == 5)
+		if(i == 5) // na 5 dodam akcje
 		{
 			pole->dodajAkcje(1);
 		}

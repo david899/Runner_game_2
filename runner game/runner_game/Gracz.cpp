@@ -6,11 +6,30 @@
 #include <math.h>
 #include "Mapa.h"
 
+void wyprostujSieTimerFunc(int wskGracz)
+{
+	//metoda ma lekkiego buga, gdy sie wyprostowuje przez chwile szescian jest za wysoki
+	if(wskGracz != 0)
+	{
+		Gracz* gracz = (Gracz*)wskGracz;
+		if(gracz->schylony)
+		{
+			float roznica = gracz->wysokoscGracza;
+			gracz->wysokoscGracza += roznica;
+			gracz->szescianAABB.y += roznica;
+			gracz->szescianAABBmin.y -= roznica;
+			gracz->szescianAABBmax.y += roznica;
+			gracz->schylony = false;
+		}
+	}
+}
+
 Gracz::Gracz(Kamera* _kamera)
 {
 	kamera = _kamera;
 	mapa = new Mapa();
 	naZiemi = true;
+	schylony = false;
 	szereokoscGracza = 3.0f; // szereokosc, grubosc, wysokosc solidCuba ktory jest graczem
 	wysokoscGracza = 10.0f;
 	gruboscGracza = 3.0f;
@@ -28,7 +47,7 @@ Gracz::Gracz(Kamera* _kamera)
 	kierunek.y = 0.0f;
 	kierunek.z = 1.0f;
 
-	predkosc = Vec3(1.0f,0.0f,0.3f);
+	predkosc = Vec3(1.0f,0.0f,0.0f);
 
 	szescianAABB = Vec3(szereokoscGracza,wysokoscGracza,gruboscGracza);
 	szescianAABBmin.x = pozycja.x - szescianAABB.x/2;
@@ -39,12 +58,15 @@ Gracz::Gracz(Kamera* _kamera)
 	szescianAABBmax.y = pozycja.y + szescianAABB.y/2;
 	szescianAABBmax.z = pozycja.z + szescianAABB.z/2;
 
-	// definiuje ktore klawisze sa odblokowane a ktore zablokowane na starcie
-	zmienStanKlawisza('w', true);
-	zmienStanKlawisza('s', true);
+	// definiuje ktore klawisze sa odblokowane a ktore zablokowane na starcie (w fazie 1)
+	zmienStanKlawisza('>', true);
+	zmienStanKlawisza('<', true);
+	zmienStanKlawisza(32, true); //spacja
+	zmienStanKlawisza('w', false);
+	zmienStanKlawisza('s', false);
 	zmienStanKlawisza('a', false);
 	zmienStanKlawisza('d', false);
-	zmienStanKlawisza(32, true); //spacja
+	
 }
 #pragma region sety i gety
 void Gracz::setXPozycja(float _x)
@@ -86,12 +108,24 @@ void Gracz::dodajPozycja(Vec3 wektorDoDodania)
 
 void Gracz::rysuj()
 {
-	glPushMatrix();
-	glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
-		glScalef(szereokoscGracza, wysokoscGracza, gruboscGracza);
-		glColor3f(1.0f,0.0f,0.0f);
-		glutSolidCube(1.0f);
-	glPopMatrix();
+	if(schylony)
+	{ // rysuje model 'schylony', narazie po prostu zmniejszam skale
+		glPushMatrix();
+		glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
+			glScalef(szereokoscGracza, wysokoscGracza, gruboscGracza);
+			glColor3f(1.0f,0.0f,0.0f);
+			glutSolidCube(1.0f);
+		glPopMatrix();
+	}	
+	else
+	{
+		glPushMatrix();
+		glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
+			glScalef(szereokoscGracza, wysokoscGracza, gruboscGracza);
+			glColor3f(1.0f,0.0f,0.0f);
+			glutSolidCube(1.0f);
+		glPopMatrix();
+	}
 }
 void Gracz::debugRysuj()
 {
@@ -224,21 +258,39 @@ void Gracz::skocz()
 		naZiemi = false;
 	}
 }
+void Gracz::schylSie()
+{
+	if(schylony == false)
+	{
+		float roznica = wysokoscGracza/2;
+		wysokoscGracza -= roznica;
+		szescianAABB.y -= roznica;
+		szescianAABBmin.y += roznica;
+		szescianAABBmax.y -= roznica;
+		schylony = true;
+		glutTimerFunc(2000, wyprostujSieTimerFunc, (int)this);
+	}
+	
+}
 #pragma region obsluga klawiszy
 void Gracz::obslugaKlawiszy(unsigned char klawisz)
 {
 	if(stanKlawiszy[klawisz]) // sprawdza czy przychodzacy klawisz jest odblokowany, jak tka to wykonuje
 	{
-		if (klawisz == 'w') 
+		if (klawisz == '>') 
 			predkosc.z += 0.15f;
+		if (klawisz == '<')
+			predkosc.z -= 0.15f;
+		if (klawisz == 'w')
+			skocz();
 		if (klawisz == 's')
-			predkosc.z = 0.0f;
+			schylSie();
 		if (klawisz == 'a')
 			zmienTor(w_lewo);
 		if (klawisz == 'd')
 			zmienTor(w_prawo);
 		if (klawisz == 32) // spacja
-			skocz();
+			predkosc.z = 0.0f;
 	}
 }
 void Gracz::zmienStanKlawisza(unsigned char klawisz, bool stan)

@@ -24,6 +24,7 @@ public:
 	Mapa* mapa;
 	Vec3 TorDocelowy;
 	bool naZiemi;
+	bool schylony;
 	Kamera* kamera;
 	
 private:
@@ -55,6 +56,7 @@ public:
 	void reakcjaNakolizje(ObiektFizyczny* obiekt);
 	void zmienTor(int kierunek);
 	void skocz();
+	void schylSie();
 	void obslugaKlawiszy(unsigned char klawisz);
 	void zmienStanKlawisza(unsigned char klawisz, bool stan);
 };
