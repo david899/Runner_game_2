@@ -29,6 +29,7 @@ public:
 	list<ObiektFizyczny*>::iterator zwrocItNaPolePoczatkowe();
 	float RandomFloat(float min, float max);
 	void WczytajModeleOrazTekstury();
+	void rysujBackground();
 private:
 	static const int iloscPolStartowych = 30  ;
 	void wypelnijPoleLosowo(ObiektFizyczny* pole);

@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
 	glShadeModel(GL_SMOOTH);
 
 	// Moje inity
-	kamera.idzDo(Vec3(-15.0f, 8.0f, 5.0f),0, gracz.getPozycja()); // pozycja poczatkowa kamery
+	kamera.idzDo(Vec3(0.0f, 8.0f, 10.0f),0, gracz.getPozycja()); // pozycja poczatkowa kamery
 	kamera.patrzNaGracza(true);
 
 	// musi byc ta kolejnosc bo inaczej gracz pobierze puste wskazniki na modele

@@ -6,35 +6,56 @@
 Mapa::Mapa()
 {
 	grawitacja = -0.05f;
-	Vec3 pos = Vec3(0,0,0);
-	Vec3 przesuniecie = Vec3(0,0,10.0f);
-	// tworzy int iloscPolStartowych pol na przod oraz wypelnia je losowo 
+	// ===================================================================================
+	// standardowym i sztywnym poczatkiem mapy jest faza 1 gry, czyli bieg przez jaskinie
+	// taki tutorial o stalej dlugosci, tutaj zaczyna sie definiowanie tych pol, wypelnianie mapy:
+	// ===================================================================================
+	Vec3 pozycjaPoczatkowa = Vec3(0,0,0);
+	// tworzy x liczbe pustych pol, potem wypelnia losowo 
 	for(int i = 0; i < iloscPolStartowych; i++)
 	{
-		ObiektFizyczny* pole = new ObiektFizyczny(this,pos,typPole);
-		pos += przesuniecie;
+		ObiektFizyczny* pole = new ObiektFizyczny(this,pozycjaPoczatkowa,typPole);
+		pozycjaPoczatkowa.z += pole->wielkoscPola.z; //odleglosc miedzy polami = ich wielkosci
 		wypelnijPoleLosowo(pole);
-		if(i == 5) // na 5 dodam akcje
-		{
-			pole->dodajAkcje(1);
-		}
 		wektorPol.push_back(pole);
 	}
-	// w powyzszej petli powineinem jeszcze dodawac inne obiekty do moich pol
+	// na pozycji 5 -> na 5 polu dodaje akcje pierwsza
+	list<ObiektFizyczny*>::iterator it = wektorPol.begin();
+	advance(it,5);
+	(*it)->dodajAkcje(1);
+}
+void Mapa::rysujBackground()
+{
+	glEnable(GL_TEXTURE_2D);
 
-	//wczytuje tekstury tylko raz podczas tworzenia, pozniej obiekty maja dostep do tego
-	//model[typPalma] = LoadObj("Resources//");
-	//tekstura[typPalma] = LoadTexture("Resources//",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
-	
-	
+
+	// rysuje jaskinie ===============================
+	glBindTexture(GL_TEXTURE_2D, tekstura[typJaskinia]);
+	glPushMatrix();
+		glTranslatef(15.0f, 0.0f, -15.0f);
+		glCallList(model[typJaskinia]);
+	glPopMatrix();
+
+	// rysuje skrzynie ==============================
+	glBindTexture(GL_TEXTURE_2D, tekstura[typSkrzynia]);
+	glPushMatrix();
+		glTranslatef(15.0f, 0.0f, -5.0f);
+		glCallList(model[typSkrzynia]);
+	glPopMatrix();
+
+
+	glDisable(GL_TEXTURE_2D);
 }
 void Mapa::rysuj()
 {
+	// rysuje pola fizyczne
 	list<ObiektFizyczny*>::iterator it = wektorPol.begin();
 	for(it = wektorPol.begin(); it != wektorPol.end(); it++)
 	{
 		(*it)->rysuj();
 	}
+	// rysuje background nie bioracy udzialu w kolizji
+	rysujBackground();
 }
 void Mapa::debugRysuj()
 {
@@ -109,6 +130,11 @@ float Mapa::RandomFloat(float min, float max)
 }
 void Mapa::WczytajModeleOrazTekstury()
 {
+	//wczytuje tekstury tylko raz podczas tworzenia, pozniej obiekty maja dostep do tego
 	model[typGracz] = LoadObj("Resources//Modele//Gracz.obj");
 	tekstura[typGracz] = LoadTexture("Resources//Tekstury//Gracz.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
+	model[typSkrzynia] = LoadObj("Resources//Modele//skrzynia.obj");
+	tekstura[typSkrzynia] = LoadTexture("Resources//Tekstury//Skrzynia.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
+	model[typJaskinia] = LoadObj("Resources//Modele//jaskinia.obj");
+	tekstura[typJaskinia] = LoadTexture("Resources//Tekstury//Jaskinia.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
 }

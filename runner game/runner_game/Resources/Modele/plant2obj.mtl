@@ -1,0 +1,82 @@
+# Blender MTL File: 'None'
+# Material Count: 8
+
+newmtl 1Newplan_1InfInt
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.156800 0.313680 0.156800
+Ks 0.098000 0.196050 0.098000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Dawid\Desktop\Modele\_gotowe\plant2.png
+
+newmtl 1Newplan_1Pdcel
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.156800 0.313680 0.156800
+Ks 0.098000 0.196050 0.098000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Dawid\Desktop\Modele\_gotowe\plant2.png
+
+newmtl 1Newplan_1Pdncle
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.156800 0.313680 0.156800
+Ks 0.098000 0.196050 0.098000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Dawid\Desktop\Modele\_gotowe\plant2.png
+
+newmtl 1Newplan_FruitR
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.313680 0.313680
+Ks 0.500000 0.196050 0.196050
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Dawid\Desktop\Modele\_gotowe\plant2.png
+
+newmtl 1Newplan_Intrnd
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.156800 0.313680 0.156800
+Ks 0.098000 0.196050 0.098000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Dawid\Desktop\Modele\_gotowe\plant2.png
+
+newmtl 1Newplan_Leaf
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.156800 0.784240 0.156800
+Ks 0.098000 0.490150 0.098000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Dawid\Desktop\Modele\_gotowe\plant2.png
+
+newmtl 1Newplan_Mrstm
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.156800 0.313680 0.156800
+Ks 0.098000 0.196050 0.098000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Dawid\Desktop\Modele\_gotowe\plant2.png
+
+newmtl 1Newplan_Petiole
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.156800 0.313680 0.156800
+Ks 0.098000 0.196050 0.098000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Dawid\Desktop\Modele\_gotowe\plant2.png

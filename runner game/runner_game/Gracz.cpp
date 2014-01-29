@@ -4,7 +4,7 @@
 // BYLY JEGO LEWYM DOLNYM PUNKTEM JAK W RESZCIE OBIEKTOW !!!!!!!!!
 // teraz wspolzedna sa srodkiem 
 #include <math.h>
-#include "Mapa.h"3
+#include "Mapa.h"
 
 void wyprostujSieTimerFunc(int wskGracz)
 {
@@ -109,27 +109,23 @@ void Gracz::rysuj()
 {
 	if(schylony)
 	{ // rysuje model 'schylony', narazie po prostu zmniejszam skale
-		/*glPushMatrix();
+		glPushMatrix();
 		glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
-			glScalef(szereokoscGracza, wysokoscGracza, gruboscGracza);
-			glColor3f(1.0f,0.0f,0.0f);
-			glutSolidCube(1.0f);
-		glPopMatrix();*/
+			glScalef(1.0f, 0.5f, 1.0f); 
+			glCallList(model);
+		glPopMatrix();
 		
 	}	
 	else
 	{
-		/*glPushMatrix();
-		glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
-			glScalef(szereokoscGracza, wysokoscGracza, gruboscGracza);
-			glColor3f(1.0f,0.0f,0.0f);
-			glutSolidCube(1.0f);
-		glPopMatrix();*/
-
-		glPushMatrix();
-		glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
-			glCallList(model);
-		glPopMatrix();
+		glEnable(GL_TEXTURE_2D);
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBindTexture(GL_TEXTURE_2D, tekstura);
+			glPushMatrix();
+				glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
+				glCallList(model);
+			glPopMatrix();
+		glDisable(GL_TEXTURE_2D);
 	}
 }
 void Gracz::debugRysuj()
