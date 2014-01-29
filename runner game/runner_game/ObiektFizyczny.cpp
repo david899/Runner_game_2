@@ -2,18 +2,17 @@
 #include <algorithm>
 #include "Gracz.h"
 #include "Kamera.h"
+#include "Mapa.h"
 
-
-
-ObiektFizyczny::ObiektFizyczny(Vec3 _pozycja, TypyObiektow _typObiektu)
+ObiektFizyczny::ObiektFizyczny(Mapa* mapa, Vec3 _pozycja, TypyObiektow _typObiektu)
 { // po czesci spelnia funkcje fabryki, wypelnia tak obiekt aby byl roznego typu od stringu _typObiektu
 	
 	// deklaracja gówna
 	wielkoscPola = Vec3(30.0f, 40.0f, 10.0f);
 	wielkoscKamienia = Vec3(5.0f, 5.0f, 5.0f);
-	wskNaAkcje = &ObiektFizyczny::akcjaPusta;
-	// koniec deklaracji szamba
+	// koniec deklaracji gowna
 	
+	wskNaAkcje = &ObiektFizyczny::akcjaPusta;
 	pozycja = _pozycja;
 	typObiektu = _typObiektu;
 	switch(typObiektu)
@@ -31,6 +30,9 @@ ObiektFizyczny::ObiektFizyczny(Vec3 _pozycja, TypyObiektow _typObiektu)
 			wskNaRysuj = &ObiektFizyczny::rysujKamien;
 			break;
 	}
+
+	model = mapa->model[typObiektu];
+	tekstura = mapa->tekstura[typObiektu];
 }
 void ObiektFizyczny::rysuj()
 {
@@ -174,6 +176,19 @@ void ObiektFizyczny::rysujKamien()
 		glScalef(wielkoscKamienia.x, wielkoscKamienia.y, wielkoscKamienia.z);
 		glutSolidSphere(0.5f,15,15); // tutaj rysuje nie od 1.0f tylk 0.5f poniewaz skaluje do PROMIENIA nie cieciwy!!
 	glPopMatrix();
+
+
+	//glEnable(GL_TEXTURE_2D); // W³¹czamy teksturowanie
+	//	
+	//// Ustawienie sposobu teksturowania - GL_MODULATE sprawia, ¿e œwiat³o ma wp³yw na teksturê; GL_DECAL i GL_REPLACE rysuj¹ teksturê tak jak jest
+	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	//	glPushMatrix();
+	//		glBindTexture(GL_TEXTURE_2D, model);
+	//		glTranslatef(srodek.x, srodek.y, srodek.z);
+	//		//jakas skala?
+	//		glCallList(model);
+	//	glPopMatrix();
+	//glDisable(GL_TEXTURE_2D);
 }
 #pragma endregion
 #pragma region metody do wsk na akcje

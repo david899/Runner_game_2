@@ -27,12 +27,10 @@
 #include <math.h>
 #include <GL/freeglut.h>
 #include <stdio.h>
-#include "Bitmap.h"
 #include "Vec3.h"
 #include "Gracz.h"
 #include "Kamera.h"
 #include "Mapa.h"
-#include "Obiekt.h"
 #include "ObiektFizyczny.h"
 
 void OnRender();
@@ -48,16 +46,8 @@ void Update(int);
 void przesunTimerFunc(int);
 GLuint LoadTexture(char *,int,int);
 class Pole;
-
-void OnReshape(int width, int height) 
-{
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glViewport(0, 0, width, height);
-	gluPerspective(60.0f, (float) width / height, .01f, 100.0f);
-}
-
 #pragma endregion
+
 using namespace std;
 
 Kamera kamera = Kamera();
@@ -95,6 +85,10 @@ int main(int argc, char* argv[])
 	// Moje inity
 	kamera.idzDo(Vec3(-15.0f, 8.0f, 5.0f),0, gracz.getPozycja()); // pozycja poczatkowa kamery
 	kamera.patrzNaGracza(true);
+
+	// musi byc ta kolejnosc bo inaczej gracz pobierze puste wskazniki na modele
+	gracz.mapa->WczytajModeleOrazTekstury();
+	gracz.PobierzModeleZMapy();
 	glEnable(GL_LIGHT0);
 
 
@@ -179,7 +173,6 @@ void Update(int id)
 	kamera.Update(gracz);
 	
 }
-
 void rysujSfereNieba()
 {
 
@@ -266,35 +259,13 @@ void OnRender()
 
 }
 
-GLuint LoadTexture(char * file, int magFilter, int minFilter) 
-{// Funkcja odczytuj¹ca bitmapê i tworz¹ca na jej podstawie teksturê z zadanym rodzajem filtracji
-	// Odczytanie bitmapy
-	Bitmap *tex = new Bitmap();
-	if (!tex->loadBMP(file)) {
-		printf("ERROR: Cannot read texture file \"%s\".\n", file);
-		return -1;
-	}
-	// Utworzenie nowego id wolnej tekstury
-	GLuint texId;
-	glGenTextures(1, &texId);
-	// "Bindowanie" tekstury o nowoutworzonym id
-	glBindTexture(GL_TEXTURE_2D, texId);
-	// Okreœlenie parametrów filtracji dla tekstury
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter); // Filtracja, gdy tekstura jest powiêkszana
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter); // Filtracja, gdy tekstura jest pomniejszana
-	// Wys³anie tekstury do pamiêci karty graficznej zale¿nie od tego, czy chcemy korzystaæ z mipmap czy nie
-	if (minFilter == GL_LINEAR_MIPMAP_LINEAR || minFilter == GL_LINEAR_MIPMAP_NEAREST) {
-		// Automatyczne zbudowanie mipmap i wys³anie tekstury do pamiêci karty graficznej
-		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, tex->width, tex->height, GL_RGB, GL_UNSIGNED_BYTE, tex->data);
-	}
-	else {
-		// Wys³anie tekstury do pamiêci karty graficznej 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->width, tex->height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex->data);
-	}
-	// Zwolnienie pamiêci, usuniêcie bitmapy z pamiêci - bitmapa jest ju¿ w pamiêci karty graficznej
-	delete tex;
-	// Zwrócenie id tekstury
-	return texId;
+
+void OnReshape(int width, int height) 
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glViewport(0, 0, width, height);
+	gluPerspective(60.0f, (float) width / height, .01f, 100.0f);
 }
 
 

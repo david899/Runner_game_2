@@ -95,6 +95,8 @@
     <ClInclude Include="Mapa.h" />
     <ClInclude Include="Obiekt.h" />
     <ClInclude Include="ObiektFizyczny.h" />
+    <ClInclude Include="ObjLoader.h" />
+    <ClInclude Include="TexLoader.h" />
     <ClInclude Include="TypyRunner.h" />
     <ClInclude Include="Vec3.h" />
   </ItemGroup>

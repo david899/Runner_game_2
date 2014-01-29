@@ -9,6 +9,7 @@
 
 class Gracz;
 class Kamera;
+class Mapa;
 
 using namespace std;
 
@@ -26,6 +27,8 @@ public:
 	TypyObiektow typObiektu;
 	Vec3 wielkoscPola;
 	Vec3 wielkoscKamienia;
+	int model, tekstura;
+
 	// metody
 	void rysuj();
 	void debugRysuj(); // debugRysuj - zamiast obiektow rysuje ich sfery kolizji
@@ -35,7 +38,7 @@ public:
 	void dodajObiekt(ObiektFizyczny* obiekt);
 	void dodajAkcje(int i);
 	// konstruktory
-	ObiektFizyczny(Vec3 _pozycja, TypyObiektow _typObiektu); // po czesci spelnia funkcje fabryki, wypelnia tak obiekt aby byl roznego typu od stri);
+	ObiektFizyczny(Mapa* mapa, Vec3 _pozycja, TypyObiektow _typObiektu); // po czesci spelnia funkcje fabryki, wypelnia tak obiekt aby byl roznego typu od stri);
 	
 private:
 	// te funkcje nie moga byc widoczne dalej, wywolywalne tylko przez wskazniki w rysuj

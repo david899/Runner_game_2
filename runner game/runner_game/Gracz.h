@@ -6,6 +6,7 @@
 #include <GL\freeglut.h>
 #include <stack>
 #include <list>
+#include <map>
 
 using namespace std;
 class ObiektFizyczny;
@@ -26,6 +27,10 @@ public:
 	bool naZiemi;
 	bool schylony;
 	Kamera* kamera;
+	// model ktory wczytuje do gracza jest (W BLENDERZE!) przesuniety o polowe wysokosci w dol (po y), 
+	// tak aby byl do polowy "wtopiony" w podloge. Wtedy dobrze dopasowuje pozycje
+	int model, tekstura;
+
 	
 private:
 	bool stanKlawiszy[256];
@@ -59,5 +64,6 @@ public:
 	void schylSie();
 	void obslugaKlawiszy(unsigned char klawisz);
 	void zmienStanKlawisza(unsigned char klawisz, bool stan);
+	void PobierzModeleZMapy();
 };
 #endif

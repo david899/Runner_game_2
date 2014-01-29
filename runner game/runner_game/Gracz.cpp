@@ -4,11 +4,11 @@
 // BYLY JEGO LEWYM DOLNYM PUNKTEM JAK W RESZCIE OBIEKTOW !!!!!!!!!
 // teraz wspolzedna sa srodkiem 
 #include <math.h>
-#include "Mapa.h"
+#include "Mapa.h"3
 
 void wyprostujSieTimerFunc(int wskGracz)
 {
-	//metoda ma lekkiego buga, gdy sie wyprostowuje przez chwile szescian jest za wysoki
+	//metoda ma lekkiego buga, gdy sie prostuje przez chwile szescian jest za wysoki
 	if(wskGracz != 0)
 	{
 		Gracz* gracz = (Gracz*)wskGracz;
@@ -30,9 +30,9 @@ Gracz::Gracz(Kamera* _kamera)
 	mapa = new Mapa();
 	naZiemi = true;
 	schylony = false;
-	szereokoscGracza = 3.0f; // szereokosc, grubosc, wysokosc solidCuba ktory jest graczem
+	szereokoscGracza = 5.5f; // szereokosc, grubosc, wysokosc solidCuba ktory jest graczem
 	wysokoscGracza = 10.0f;
-	gruboscGracza = 3.0f;
+	gruboscGracza = 2.0f;
 
 	// pozycja srodka gracza
 	itNaAktualnePole = mapa->zwrocItNaPolePoczatkowe();
@@ -42,7 +42,6 @@ Gracz::Gracz(Kamera* _kamera)
 	pozycja.y = wysokoscGracza / 2;
 	pozycja.z = (*itNaAktualnePole)->pozycja.z;
 	TorDocelowy = pozycja;
-
 	kierunek.x = 0.0f;
 	kierunek.y = 0.0f;
 	kierunek.z = 1.0f;
@@ -110,20 +109,26 @@ void Gracz::rysuj()
 {
 	if(schylony)
 	{ // rysuje model 'schylony', narazie po prostu zmniejszam skale
-		glPushMatrix();
+		/*glPushMatrix();
 		glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
 			glScalef(szereokoscGracza, wysokoscGracza, gruboscGracza);
 			glColor3f(1.0f,0.0f,0.0f);
 			glutSolidCube(1.0f);
-		glPopMatrix();
+		glPopMatrix();*/
+		
 	}	
 	else
 	{
-		glPushMatrix();
+		/*glPushMatrix();
 		glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
 			glScalef(szereokoscGracza, wysokoscGracza, gruboscGracza);
 			glColor3f(1.0f,0.0f,0.0f);
 			glutSolidCube(1.0f);
+		glPopMatrix();*/
+
+		glPushMatrix();
+		glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
+			glCallList(model);
 		glPopMatrix();
 	}
 }
@@ -271,6 +276,11 @@ void Gracz::schylSie()
 		glutTimerFunc(2000, wyprostujSieTimerFunc, (int)this);
 	}
 	
+}
+void Gracz::PobierzModeleZMapy()
+{ // musze wywolywac pod funkcja w ktorej mapa wczytala modele, inaczej pobiore puste wskazniki
+	model = mapa->model[typGracz];
+	tekstura = mapa->tekstura[typGracz];
 }
 #pragma region obsluga klawiszy
 void Gracz::obslugaKlawiszy(unsigned char klawisz)

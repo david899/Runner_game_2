@@ -1,5 +1,7 @@
 #include "Mapa.h"
 #include "ObiektFizyczny.h"
+#include "ObjLoader.h"
+#include "TexLoader.h"
 
 Mapa::Mapa()
 {
@@ -9,7 +11,7 @@ Mapa::Mapa()
 	// tworzy int iloscPolStartowych pol na przod oraz wypelnia je losowo 
 	for(int i = 0; i < iloscPolStartowych; i++)
 	{
-		ObiektFizyczny* pole = new ObiektFizyczny(pos,typPole);
+		ObiektFizyczny* pole = new ObiektFizyczny(this,pos,typPole);
 		pos += przesuniecie;
 		wypelnijPoleLosowo(pole);
 		if(i == 5) // na 5 dodam akcje
@@ -17,9 +19,14 @@ Mapa::Mapa()
 			pole->dodajAkcje(1);
 		}
 		wektorPol.push_back(pole);
-		
 	}
 	// w powyzszej petli powineinem jeszcze dodawac inne obiekty do moich pol
+
+	//wczytuje tekstury tylko raz podczas tworzenia, pozniej obiekty maja dostep do tego
+	//model[typPalma] = LoadObj("Resources//");
+	//tekstura[typPalma] = LoadTexture("Resources//",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
+	
+	
 }
 void Mapa::rysuj()
 {
@@ -51,7 +58,7 @@ void Mapa::generujPola(int ilePol)
 		it = wektorPol.end();
 		--it;
 		pozycjaNowegoPola = (*it)->pozycja + przesuniecie;
-		nowePole = new ObiektFizyczny(pozycjaNowegoPola, typPole);
+		nowePole = new ObiektFizyczny(this,pozycjaNowegoPola, typPole);
 		wypelnijPoleLosowo(nowePole);	// wypelniam losowymi obiektami (moj element losowosci, 
 										//pozniej trzeba dopasowac tak aby mapa byla "przejezdna"
 		wektorPol.push_back(nowePole);
@@ -74,7 +81,7 @@ void Mapa::generujPola(int ileWygenerowac, int ileUsunac)
 	{
 		it = wektorPol.end();
 		pozycjaNowegoPola = (*it)->pozycja + przesuniecie;
-		nowePole = new ObiektFizyczny(pozycjaNowegoPola, typPole);
+		nowePole = new ObiektFizyczny(this,pozycjaNowegoPola, typPole);
 		wypelnijPoleLosowo(nowePole);	// wypelniam losowymi obiektami (moj element losowosci, 
 										//pozniej trzeba dopasowac tak aby mapa byla "przejezdna"
 		wektorPol.push_back(nowePole);
@@ -86,7 +93,7 @@ void Mapa::wypelnijPoleLosowo(ObiektFizyczny* poleDoWypelnienia)
 	x = RandomFloat(poleDoWypelnienia->szescianAABBmin.x, poleDoWypelnienia->szescianAABBmax.x);
 	y = RandomFloat(poleDoWypelnienia->szescianAABBmin.y, poleDoWypelnienia->szescianAABBmax.y);
 	z = RandomFloat(poleDoWypelnienia->szescianAABBmin.z, poleDoWypelnienia->szescianAABBmax.z);
-	ObiektFizyczny* obiekt = new ObiektFizyczny(Vec3(x,y,z),typKamien);
+	ObiektFizyczny* obiekt = new ObiektFizyczny(this,Vec3(x,y,z),typKamien);
 	poleDoWypelnienia->dodajObiekt(obiekt);
 }
 list<ObiektFizyczny*>::iterator Mapa::zwrocItNaPolePoczatkowe()
@@ -99,4 +106,9 @@ float Mapa::RandomFloat(float min, float max)
 	int r = rand(); 
 	float fraction = ((float) r / RAND_MAX) * (max - min); 
 	return min + fraction;
+}
+void Mapa::WczytajModeleOrazTekstury()
+{
+	model[typGracz] = LoadObj("Resources//Modele//Gracz.obj");
+	tekstura[typGracz] = LoadTexture("Resources//Tekstury//Gracz.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
 }
