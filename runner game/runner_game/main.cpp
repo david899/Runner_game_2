@@ -33,6 +33,8 @@
 #include "Mapa.h"
 #include "ObiektFizyczny.h"
 
+void rysujSkydoome();
+GLuint stworzSkydome();
 void OnRender();
 void OnReshape(int, int);
 void OnKeyPress(unsigned char, int, int);
@@ -55,6 +57,10 @@ Gracz gracz = Gracz(&kamera);
 
 double czasGry = 0.0; // aktualny czas (a dokladniej - czas z ostatniego wywolania Update())
 bool debug = false;
+GLuint skydoome;
+GLuint _skyTexture;
+GLuint podlogaTextura;
+float skydomeRotate = 0.0f;
 
 int main(int argc, char* argv[])
 {
@@ -83,14 +89,13 @@ int main(int argc, char* argv[])
 	glShadeModel(GL_SMOOTH);
 
 	// Moje inity
+	skydoome = stworzSkydome();
 	kamera.idzDo(Vec3(0.0f, 8.0f, 10.0f),0, gracz.getPozycja()); // pozycja poczatkowa kamery
 	kamera.patrzNaGracza(true);
 
 	// musi byc ta kolejnosc bo inaczej gracz pobierze puste wskazniki na modele
 	gracz.mapa->WczytajModeleOrazTekstury();
-	gracz.PobierzModeleZMapy();
 	glEnable(GL_LIGHT0);
-
 
 
 	glutMainLoop();
@@ -171,48 +176,7 @@ void Update(int id)
 
 	gracz.update();
 	kamera.Update(gracz);
-	
-}
-void rysujSfereNieba()
-{
-
-}
-void rysujSciane()
-{
-	glEnable(GL_TEXTURE_2D);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	//glBindTexture(GL_TEXTURE_2D, texSkrzynka_przod); nie mam tej zmiennej juz
-	glPushMatrix();
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glScalef(.5f, .5f, .5f);
-		glTranslatef(4.5f, 2.0f, 3.0f);
-			glBegin(GL_QUADS);
-				glTexCoord2f( 0.0f,  1.0f);
-				glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-				glTexCoord2f( 0.0f,  0.0f);
-				glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-				glTexCoord2f( 1.0f,  0.0f);
-				glVertex3f( 1.0f, -1.0f,  0.0f);
-			
-				glTexCoord2f( 1.0f,  1.0f);
-				glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-				glTexCoord2f( 0.0f,  0.0f);
-				glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-				glTexCoord2f( 0.0f,  1.0f);
-				glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-				glTexCoord2f( 1.0f,  1.0f);
-				glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-				glTexCoord2f( 1.0f,  0.0f);
-				glVertex3f( 1.0f, -1.0f,  0.0f);
-			glEnd();
-		glPopMatrix();
-		glDisable(GL_TEXTURE_2D);
+	skydomeRotate+= 0.03f;
 }
 
 void OnRender() 
@@ -251,6 +215,8 @@ void OnRender()
 			gracz.mapa->debugRysuj();
  			gracz.debugRysuj();
 		}
+
+		rysujSkydoome();
 	#pragma endregion
 	
 	glutSwapBuffers();
@@ -265,7 +231,80 @@ void OnReshape(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, width, height);
-	gluPerspective(60.0f, (float) width / height, .01f, 100.0f);
+	gluPerspective(60.0f, (float) width / height, .01f, 500.0f);
 }
 
+GLuint stworzSkydome()
+{
+	int Np = 36;
+	float radius = 20.0f;
+	float PI = 3.14;
 
+	_skyTexture = LoadTexture("Resources\\Tekstury\\Skydome.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
+	podlogaTextura = LoadTexture("Resources\\Tekstury\\Podloga.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
+
+	GLuint _displayListId;
+	_displayListId = glGenLists(1);
+	glNewList(_displayListId, GL_COMPILE);
+	glBegin(GL_QUAD_STRIP);
+			for (int j = -1; j < Np / 2; ++j) {
+				for (int i = 0; i <= Np; ++i) {
+
+					float t1 = PI * j / Np - PI / 2;
+					float t2 = PI * (j+1) / Np - PI / 2;
+					float p = PI * 2.0f * i / Np;
+
+					float tx1 = sin(t1) * cos(p);
+					float tx2 = sin(t2) * cos(p);
+					float tz1 = sin(t1) * sin(p);
+					float tz2 = sin(t2) * sin(p);
+					float ty1 = cos(t1);
+					float ty2 = cos(t2);
+					
+					float tr1 = -sin(t1);
+					float tr2 = -sin(t2);
+
+					float x1 = radius * tx1;
+					float x2 = radius * tx2;
+					float z1 = radius * tz1;
+					float z2 = radius * tz2;
+					float y1 = radius * ty1;
+					float y2 = radius * ty2;
+
+					glTexCoord2f(.5f + .5f * tr2 * tx2, .5f + .5f * tr2 * tz2);
+					glNormal3f(x2, y2, z2);
+					glVertex3f(x2, y2, z2);
+					
+					glTexCoord2f(.5f + .5f * tr1 * tx1, .5f + .5f * tr1 * tz1);
+					glNormal3f(x1, y1, z1);
+					glVertex3f(x1, y1, z1);
+
+				}
+			}
+		glEnd();
+	glEndList();
+	return _displayListId;
+}
+void rysujSkydoome()
+{
+	glEnable(GL_TEXTURE_2D);
+	glPushMatrix();
+
+		glColor3f(1.0, 1.0f, 1.0f);
+		glTranslatef(gracz.getPozycja().x, 0.0f, gracz.getPozycja().z);
+		glRotatef(skydomeRotate, 0.0f, 1.0f, 0.0f);
+		glBindTexture(GL_TEXTURE_2D, _skyTexture);
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+		glScalef(10.0f, 10.0f, 10.0f);
+		glCallList(skydoome);
+
+		glBindTexture(GL_TEXTURE_2D, podlogaTextura);
+		glTranslatef(0.0f, -0.1f, 0.0f);
+		glScalef(10.0f, 0.01f, 10.0f);
+		glColor3f(0.36f, 0.145, 0);
+		glutSolidCube(10.0f);
+
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+	
+}

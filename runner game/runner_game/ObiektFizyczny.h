@@ -27,7 +27,7 @@ public:
 	TypyObiektow typObiektu;
 	Vec3 wielkoscPola;
 	Vec3 wielkoscKamienia;
-	int model, tekstura;
+	int *model, *tekstura;
 
 	// metody
 	void rysuj();
@@ -44,6 +44,7 @@ private:
 	// te funkcje nie moga byc widoczne dalej, wywolywalne tylko przez wskazniki w rysuj
 	void rysujPole(); 
 	void rysujKamien();
+	void rysujPalme();
 
 	//to sa akcje, czyli takie skrypty ktore beda sie wywolywac gdy wykryje kolizje z tym ob. fiz.
 	void akcjaFaza1Pocz(Gracz* gracz, Kamera* kamera);

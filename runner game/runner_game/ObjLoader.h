@@ -62,6 +62,11 @@ GLuint LoadObj(char * file) {
 	GLuint dlId;
 	dlId = glGenLists(1);
 	glNewList(dlId, GL_COMPILE);
+	if(n->size() == 0 || t->size() == 0 || v->size() == 0)
+	{
+		printf("Blad podczas ladowania modelu, vertex:%d, texture:%d, normals:%d\n",v->size(), t->size(),n->size());
+		return 0;
+	}
 		glBegin(GL_TRIANGLES);
 		for (int i = 0; i < f->size(); ++i) {
 			for (int j = 0; j < 3; ++j) {

@@ -29,7 +29,7 @@ public:
 	Kamera* kamera;
 	// model ktory wczytuje do gracza jest (W BLENDERZE!) przesuniety o polowe wysokosci w dol (po y), 
 	// tak aby byl do polowy "wtopiony" w podloge. Wtedy dobrze dopasowuje pozycje
-	int model, tekstura;
+	int *model, *tekstura;
 
 	
 private:
@@ -64,6 +64,5 @@ public:
 	void schylSie();
 	void obslugaKlawiszy(unsigned char klawisz);
 	void zmienStanKlawisza(unsigned char klawisz, bool stan);
-	void PobierzModeleZMapy();
 };
 #endif

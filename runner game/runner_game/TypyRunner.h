@@ -4,9 +4,10 @@ enum TypyObiektow
 	typDrzewo = 1,
 	typKamien = 2,
 	typGracz = 3,
-	typPalma = 4,
-	typJaskinia = 5,
-	typSkrzynia = 6
+	typPalma1 = 4,
+	typPalma2 = 5,
+	typJaskinia = 6,
+	typSkrzynia = 7
 };
 
 enum kierunek_ruchu

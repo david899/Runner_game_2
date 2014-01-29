@@ -66,6 +66,8 @@ Gracz::Gracz(Kamera* _kamera)
 	zmienStanKlawisza('a', false);
 	zmienStanKlawisza('d', false);
 	
+	model = &(mapa->model[typGracz]);
+	tekstura = &(mapa->tekstura[typGracz]);
 }
 #pragma region sety i gety
 void Gracz::setXPozycja(float _x)
@@ -112,7 +114,7 @@ void Gracz::rysuj()
 		glPushMatrix();
 		glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
 			glScalef(1.0f, 0.5f, 1.0f); 
-			glCallList(model);
+			glCallList(*model);
 		glPopMatrix();
 		
 	}	
@@ -120,10 +122,10 @@ void Gracz::rysuj()
 	{
 		glEnable(GL_TEXTURE_2D);
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			glBindTexture(GL_TEXTURE_2D, tekstura);
+			glBindTexture(GL_TEXTURE_2D, *tekstura);
 			glPushMatrix();
 				glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
-				glCallList(model);
+				glCallList(*model);
 			glPopMatrix();
 		glDisable(GL_TEXTURE_2D);
 	}
@@ -272,11 +274,6 @@ void Gracz::schylSie()
 		glutTimerFunc(2000, wyprostujSieTimerFunc, (int)this);
 	}
 	
-}
-void Gracz::PobierzModeleZMapy()
-{ // musze wywolywac pod funkcja w ktorej mapa wczytala modele, inaczej pobiore puste wskazniki
-	model = mapa->model[typGracz];
-	tekstura = mapa->tekstura[typGracz];
 }
 #pragma region obsluga klawiszy
 void Gracz::obslugaKlawiszy(unsigned char klawisz)
