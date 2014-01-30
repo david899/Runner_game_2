@@ -155,6 +155,8 @@ float Mapa::RandomFloat(float min, float max)
 void Mapa::WczytajModeleOrazTekstury()
 {
 	//wczytuje tekstury tylko raz podczas tworzenia, pozniej obiekty maja dostep do tego
+	tekstura[typPole] = LoadTexture("Resources//Tekstury//Podloga.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
+
 	model[typGracz] = LoadObj("Resources//Modele//Gracz.obj");
 	tekstura[typGracz] = LoadTexture("Resources//Tekstury//Gracz.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
 	
@@ -173,5 +175,5 @@ void Mapa::WczytajModeleOrazTekstury()
 	model[typKamien] = LoadObj("Resources//Modele//Kamien.obj");
 	tekstura[typKamien] = LoadTexture("Resources//Tekstury//Kamien.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
 
-
+	
 }

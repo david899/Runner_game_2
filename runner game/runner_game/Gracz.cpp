@@ -45,6 +45,8 @@ Gracz::Gracz(Kamera* _kamera)
 	kierunek.x = 0.0f;
 	kierunek.y = 0.0f;
 	kierunek.z = 1.0f;
+	zdrowie = 3;
+	niezniszczalnosc = false;
 
 	predkosc = Vec3(1.0f,0.0f,0.0f);
 
@@ -107,6 +109,14 @@ void Gracz::dodajPozycja(Vec3 wektorDoDodania)
 #pragma endregion
 ///////////////////////////////////////
 
+void Gracz::rysujIloscZdrowia()
+{
+	Vec3 pozycja;
+	for(int i = 0; i < zdrowie; i++)
+	{// rysuje tyle serc ile 
+
+	}
+}
 void Gracz::rysuj()
 {
 	if(schylony)

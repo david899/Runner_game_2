@@ -59,7 +59,6 @@ double czasGry = 0.0; // aktualny czas (a dokladniej - czas z ostatniego wywolan
 bool debug = false;
 GLuint skydoome;
 GLuint _skyTexture;
-GLuint podlogaTextura;
 float skydomeRotate = 0.0f;
 
 int main(int argc, char* argv[])
@@ -241,8 +240,6 @@ GLuint stworzSkydome()
 	float PI = 3.14;
 
 	_skyTexture = LoadTexture("Resources\\Tekstury\\Skydome.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
-	podlogaTextura = LoadTexture("Resources\\Tekstury\\Podloga.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
-
 	GLuint _displayListId;
 	_displayListId = glGenLists(1);
 	glNewList(_displayListId, GL_COMPILE);
@@ -288,6 +285,7 @@ GLuint stworzSkydome()
 void rysujSkydoome()
 {
 	glEnable(GL_TEXTURE_2D);
+
 	glPushMatrix();
 
 		glColor3f(1.0, 1.0f, 1.0f);
@@ -297,14 +295,8 @@ void rysujSkydoome()
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 		glScalef(10.0f, 10.0f, 10.0f);
 		glCallList(skydoome);
-
-		glBindTexture(GL_TEXTURE_2D, podlogaTextura);
-		glTranslatef(0.0f, -0.1f, 0.0f);
-		glScalef(10.0f, 0.01f, 10.0f);
-		glColor3f(0.36f, 0.145, 0);
-		glutSolidCube(10.0f);
-
 	glPopMatrix();
+
 	glDisable(GL_TEXTURE_2D);
 	
 }

@@ -180,7 +180,32 @@ void ObiektFizyczny::dodajObiekt(ObiektFizyczny* obiekt)
 
 #pragma region metody do wsk na rysuj
 void ObiektFizyczny::rysujPole()
-{ // pola nie rysuje
+{ 
+	// rysuje tylko "podloge"
+	glEnable(GL_TEXTURE_2D);
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D, *tekstura);
+		glTranslatef(pozycja.x, 0.0f, pozycja.z);
+		glScalef(100.0f, 1.0f, 5.0f);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0f, 0.0f);
+			glNormal3f(0.0f, 10.0f, 0.0f);
+			glVertex3f(-1.0f, 0.0f, -1.0f);
+
+			glTexCoord2f(10.0f, 0.0f);
+			glNormal3f(0.0f, 1.0f, 0.0f);
+			glVertex3f(1.0f, 0.0f, -1.0f);
+
+			glTexCoord2f(10.0f, 1.0f);
+			glNormal3f(0.0f, 1.0f, 0.0f);
+			glVertex3f(1.0f, 0.0f, 1.0f);
+
+			glTexCoord2f(0.0f, 1.0f);
+			glNormal3f(0.0f, 1.0f, 0.0f);
+			glVertex3f(-1.0f, 0.0f, 1.0f);
+		glEnd();
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
 }
 void ObiektFizyczny::rysujPalme()
 {

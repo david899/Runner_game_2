@@ -7,7 +7,8 @@ enum TypyObiektow
 	typPalma1 = 4,
 	typPalma2 = 5,
 	typJaskinia = 6,
-	typSkrzynia = 7
+	typSkrzynia = 7,
+	typSerce = 8
 };
 
 enum kierunek_ruchu
