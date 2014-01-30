@@ -49,6 +49,7 @@ private:
 	//to sa akcje, czyli takie skrypty ktore beda sie wywolywac gdy wykryje kolizje z tym ob. fiz.
 	void akcjaFaza1Pocz(Gracz* gracz, Kamera* kamera);
 	void akcjaPusta(Gracz* gracz, Kamera* kamera);
+	void akcjaFaza2Pocz(Gracz* gracz, Kamera* kamera);
 };
 
 #endif

@@ -5,6 +5,7 @@
 // teraz wspolzedna sa srodkiem 
 #include <math.h>
 #include "Mapa.h"
+#include "Kamera.h"
 
 void wyprostujSieTimerFunc(int wskGracz)
 {
@@ -21,6 +22,16 @@ void wyprostujSieTimerFunc(int wskGracz)
 			gracz->szescianAABBmax.y += roznica;
 			gracz->schylony = false;
 		}
+	}
+}
+void zwiekszPredkoscTimerFunc(int wskGracz)
+{
+	if(wskGracz != 0)
+	{
+		Gracz* gracz = (Gracz*)wskGracz;
+		gracz->predkosc.z += 0.02f;
+		if(gracz->predkosc.z < 2.0f)
+			glutTimerFunc(10000, zwiekszPredkoscTimerFunc, wskGracz);
 	}
 }
 
@@ -45,7 +56,7 @@ Gracz::Gracz(Kamera* _kamera)
 	kierunek.x = 0.0f;
 	kierunek.y = 0.0f;
 	kierunek.z = 1.0f;
-	zdrowie = 3;
+	zdrowie = 1;
 	niezniszczalnosc = false;
 
 	predkosc = Vec3(1.0f,0.0f,0.0f);
@@ -111,14 +122,25 @@ void Gracz::dodajPozycja(Vec3 wektorDoDodania)
 
 void Gracz::rysujIloscZdrowia()
 {
-	Vec3 pozycja;
-	for(int i = 0; i < zdrowie; i++)
-	{// rysuje tyle serc ile 
+	Vec3 pozycja = kamera->pozycja;
+	pozycja.x += 5.0f;
+	pozycja.y += 5.0f;
+	pozycja.z += 5.0f;
 
-	}
+	glEnable(GL_TEXTURE_2D);
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBindTexture(GL_TEXTURE_2D, *tekstura);
+			glPushMatrix();
+				glTranslatef(pozycja.x, pozycja.y, pozycja.z);
+				glCallList(mapa->model[typSerce]);
+			glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
 }
 void Gracz::rysuj()
 {
+	//rysujIloscZdrowia();
+
+	glColor3f(1.0f,1.0f,1.0f);
 	if(schylony)
 	{ // rysuje model 'schylony', narazie po prostu zmniejszam skale
 		glPushMatrix();
@@ -212,9 +234,7 @@ void Gracz::reakcjaNakolizje(ObiektFizyczny* obiekt)
 		break;
 	case typKamien:
 		glPushMatrix();
-			glColor3f(1.0f,0.0f,0.0f);
-			glTranslatef(obiekt->pozycja.x,obiekt->pozycja.y,obiekt->pozycja.z);
-			glutSolidCube(1.0f);
+			przegrana();
 		glPopMatrix();
 		break;
 	}
@@ -285,9 +305,20 @@ void Gracz::schylSie()
 	}
 	
 }
+void Gracz::przegrana()
+{
+	predkosc = Vec3(0,0,0);
+	kamera->idzDo(Vec3(15.0f,7.0f,-5.0f), 5000, Vec3(15.0f, 0.0f, -5.0f));
+}
 #pragma region obsluga klawiszy
 void Gracz::obslugaKlawiszy(unsigned char klawisz)
 {
+	if(predkosc.z == 0)
+	{
+		predkosc.z += 0.3f;
+		glutTimerFunc(10000,zwiekszPredkoscTimerFunc,(int)this);
+	}
+
 	if(stanKlawiszy[klawisz]) // sprawdza czy przychodzacy klawisz jest odblokowany, jak tka to wykonuje
 	{
 		if (klawisz == '>') 

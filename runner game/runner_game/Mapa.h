@@ -31,7 +31,7 @@ public:
 	void WczytajModeleOrazTekstury();
 	void rysujBackground();
 private:
-	static const int iloscPolStartowych = 30  ;
-	void wypelnijPoleLosowo(ObiektFizyczny* pole);
+	static const int iloscPolStartowych = 15;
+	void wypelnijPoleLosowo(ObiektFizyczny* poleDoWypelnienia);
 };
 #endif

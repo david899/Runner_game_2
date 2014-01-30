@@ -23,11 +23,12 @@ Mapa::Mapa()
 	list<ObiektFizyczny*>::iterator it = wektorPol.begin();
 	advance(it,5);
 	(*it)->dodajAkcje(1);
+	advance(it,9);
+	(*it)->dodajAkcje(2);
 }
 void Mapa::rysujBackground()
 {
 	glEnable(GL_TEXTURE_2D);
-
 
 	// rysuje jaskinie ===============================
 	glBindTexture(GL_TEXTURE_2D, tekstura[typJaskinia]);
@@ -41,7 +42,32 @@ void Mapa::rysujBackground()
 	glPushMatrix();
 		glTranslatef(15.0f, 0.0f, -5.0f);
 		glCallList(model[typSkrzynia]);
+	
+	//rysuje teksture koniec gry
+		glBindTexture(GL_TEXTURE_2D, tekstura[typPrzegrana]);
+		glTranslatef(0.0f, 0.5f, 0.0f);
+		glScalef(2.0f, 1.0f, 1.0f);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0f, 0.0f);
+			glNormal3f(0.0f, 1.0f, 0.0f);
+			glVertex3f(-1.0f, 0.0f, -1.0f);
+
+			glTexCoord2f(1.0f, 0.0f);
+			glNormal3f(0.0f, 1.0f, 0.0f);
+			glVertex3f(1.0f, 0.0f, -1.0f);
+
+			glTexCoord2f(1.0f, 1.0f);
+			glNormal3f(0.0f, 1.0f, 0.0f);
+			glVertex3f(1.0f, 0.0f, 1.0f);
+
+			glTexCoord2f(0.0f, 1.0f);
+			glNormal3f(0.0f, 1.0f, 0.0f);
+			glVertex3f(-1.0f, 0.0f, 1.0f);
+		glEnd();
 	glPopMatrix();
+
+	
+
 
 
 	glDisable(GL_TEXTURE_2D);
@@ -75,7 +101,7 @@ void Mapa::generujPola(int ilePol)
 	for(int i = 0; i < ilePol; i++)
 	{
 		it = wektorPol.begin();
-		wektorPol.erase(it);
+		//wektorPol.erase(it);
 		it = wektorPol.end();
 		--it;
 		pozycjaNowegoPola = (*it)->pozycja + przesuniecie;
@@ -110,14 +136,6 @@ void Mapa::generujPola(int ileWygenerowac, int ileUsunac)
 }
 void Mapa::wypelnijPoleLosowo(ObiektFizyczny* poleDoWypelnienia)
 {
-	// kamien na losowym miejscu
-	
-	/*x = RandomFloat(poleDoWypelnienia->szescianAABBmin.x, poleDoWypelnienia->szescianAABBmax.x);
-	y = RandomFloat(poleDoWypelnienia->szescianAABBmin.y, poleDoWypelnienia->szescianAABBmax.y);
-	z = RandomFloat(poleDoWypelnienia->szescianAABBmin.z, poleDoWypelnienia->szescianAABBmax.z);
-	ObiektFizyczny* obiekt = new ObiektFizyczny(this,Vec3(x,y,z),typKamien);
-	poleDoWypelnienia->dodajObiekt(obiekt);*/
-
 	// drzewo w losowym miejscu backgroundu, czyli po x > 30.0f x < 40.0f miejscu mapy w obszarze pola
 	float x,y,z;
 	x = RandomFloat(poleDoWypelnienia->szescianAABBmax.x,poleDoWypelnienia->szescianAABBmax.x+10.0f);
@@ -175,5 +193,7 @@ void Mapa::WczytajModeleOrazTekstury()
 	model[typKamien] = LoadObj("Resources//Modele//Kamien.obj");
 	tekstura[typKamien] = LoadTexture("Resources//Tekstury//Kamien.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
 
-	
+	model[typSerce] = LoadObj("Resources//Modele//Serce.obj");
+
+	tekstura[typPrzegrana] = LoadTexture("Resources//Tekstury//Przegrana1.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
 }

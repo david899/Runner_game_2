@@ -67,5 +67,6 @@ public:
 	void obslugaKlawiszy(unsigned char klawisz);
 	void zmienStanKlawisza(unsigned char klawisz, bool stan);
 	void rysujIloscZdrowia();
+	void przegrana();
 };
 #endif

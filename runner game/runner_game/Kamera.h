@@ -8,7 +8,6 @@ class Kamera
 {
 private:
 	//zmienne
-	Vec3 cel;
 	bool patrzeNaGracza;
 	bool sledzeGracza;
 	Vec3 manKierunek; // do manualnego ruchu
@@ -20,6 +19,7 @@ public:
 	//zmienne
 	static const int odchylenieX = 0, odchylenieY = 25, odchylenieZ = -30; // do ustalania pozycji za graczem
 	Vec3 pozycja;
+	Vec3 cel;
 	Vec3 przesuniecie; // ta i kolejna to zmienne do wykorzystania TYLKO! do funkcji idzDo, a dokladnie onTimer
 	int iloscPrzesuniec;
 	Vec3 zwrocCel();

@@ -240,6 +240,8 @@ void ObiektFizyczny::dodajAkcje(int i)
 		case 1:
 			wskNaAkcje = &ObiektFizyczny::akcjaFaza1Pocz;
 			break;
+		case 2:
+			wskNaAkcje = &ObiektFizyczny::akcjaFaza2Pocz;
 	}
 	
 }
@@ -258,5 +260,12 @@ void ObiektFizyczny::akcjaFaza1Pocz(Gracz* gracz, Kamera* kamera)
 	cel.x -= 45.0f;
 	kamera->idzDo(cel, 15000, gracz->getPozycja()); // nie dzia³a tutaj 15 sekund?? 
 	kamera->sledzGracza(*gracz, true);
+}
+void ObiektFizyczny::akcjaFaza2Pocz(Gracz* gracz, Kamera* kamera)
+{
+	gracz->zmienStanKlawisza('a', true);
+	gracz->zmienStanKlawisza('d', true);
+
+	kamera->idzDo(*gracz, 500, true, true);
 }
 #pragma endregion
