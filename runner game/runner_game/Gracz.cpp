@@ -143,11 +143,15 @@ void Gracz::rysuj()
 	glColor3f(1.0f,1.0f,1.0f);
 	if(schylony)
 	{ // rysuje model 'schylony', narazie po prostu zmniejszam skale
-		glPushMatrix();
-		glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
-			glScalef(1.0f, 0.5f, 1.0f); 
-			glCallList(*model);
-		glPopMatrix();
+		glEnable(GL_TEXTURE_2D);
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBindTexture(GL_TEXTURE_2D, *tekstura);
+			glPushMatrix();
+				glScalef(1.0f, 0.5f, 1.0f);
+				glTranslatef(getPozycja().x, getPozycja().y, getPozycja().z);
+				glCallList(*model);
+			glPopMatrix();
+		glDisable(GL_TEXTURE_2D);
 		
 	}	
 	else

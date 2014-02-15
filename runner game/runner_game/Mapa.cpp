@@ -173,27 +173,27 @@ float Mapa::RandomFloat(float min, float max)
 void Mapa::WczytajModeleOrazTekstury()
 {
 	//wczytuje tekstury tylko raz podczas tworzenia, pozniej obiekty maja dostep do tego
-	tekstura[typPole] = LoadTexture("Resources//Tekstury//Podloga.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
+	tekstura[typPole] = LoadTexture("../Resources/Tekstury/Podloga.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
 
-	model[typGracz] = LoadObj("Resources//Modele//Gracz.obj");
-	tekstura[typGracz] = LoadTexture("Resources//Tekstury//Gracz.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
+	model[typGracz] = LoadObj("../Resources/Modele/Gracz.obj");
+	tekstura[typGracz] = LoadTexture("../Resources/Tekstury/Gracz.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
 	
-	model[typSkrzynia] = LoadObj("Resources//Modele//skrzynia.obj");
-	tekstura[typSkrzynia] = LoadTexture("Resources//Tekstury//Skrzynia.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
+	model[typSkrzynia] = LoadObj("../Resources//Modele/skrzynia.obj");
+	tekstura[typSkrzynia] = LoadTexture("../Resources/Tekstury/Skrzynia.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
 	
-	model[typJaskinia] = LoadObj("Resources//Modele//jaskinia.obj");
-	tekstura[typJaskinia] = LoadTexture("Resources//Tekstury//Jaskinia.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
+	model[typJaskinia] = LoadObj("../Resources//Modele/jaskinia.obj");
+	tekstura[typJaskinia] = LoadTexture("../Resources/Tekstury/Jaskinia.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
 
-	model[typPalma1] = LoadObj("Resources//Modele//Palma1.obj");
-	tekstura[typPalma1] = LoadTexture("Resources//Tekstury//Palma1.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
+	model[typPalma1] = LoadObj("../Resources/Modele/Palma1.obj");
+	tekstura[typPalma1] = LoadTexture("../Resources/Tekstury/Palma1.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR); 
 
-	model[typPalma2] = LoadObj("Resources//Modele//Palma2.obj");
-	tekstura[typPalma2] = LoadTexture("Resources//Tekstury//Palma2.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
+	model[typPalma2] = LoadObj("../Resources/Modele/Palma2.obj");
+	tekstura[typPalma2] = LoadTexture("../Resources/Tekstury/Palma2.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
 
-	model[typKamien] = LoadObj("Resources//Modele//Kamien.obj");
-	tekstura[typKamien] = LoadTexture("Resources//Tekstury//Kamien.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
+	model[typKamien] = LoadObj("../Resources/Modele//Kamien.obj");
+	tekstura[typKamien] = LoadTexture("../Resources/Tekstury/Kamien.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
 
-	model[typSerce] = LoadObj("Resources//Modele//Serce.obj");
+	model[typSerce] = LoadObj("../Resources/Modele/Serce.obj");
 
-	tekstura[typPrzegrana] = LoadTexture("Resources//Tekstury//Przegrana1.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
+	tekstura[typPrzegrana] = LoadTexture("../Resources/Tekstury/Przegrana1.bmp",GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
 }

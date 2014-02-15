@@ -239,7 +239,7 @@ GLuint stworzSkydome()
 	float radius = 20.0f;
 	float PI = 3.14;
 
-	_skyTexture = LoadTexture("Resources\\Tekstury\\Skydome.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
+	_skyTexture = LoadTexture("../Resources/Tekstury/Skydome.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
 	GLuint _displayListId;
 	_displayListId = glGenLists(1);
 	glNewList(_displayListId, GL_COMPILE);
